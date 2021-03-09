@@ -33,6 +33,7 @@ public class MainGUI extends JFrame {
     private JTextArea textArea;
     private final ButtonGroup buttonGroup = new ButtonGroup();
     private Business.Student student;
+    private int counter = 0;
 
     /**
      * Launch the application.
@@ -191,7 +192,8 @@ public class MainGUI extends JFrame {
         btnFirst.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) 
         	{
-        		int record=1;
+        		setCounter(1);
+        		int record=1;        		
 				
 				try {
 					Student S = StudentIO.firstRecord(record);
@@ -213,12 +215,71 @@ public class MainGUI extends JFrame {
         contentPane.add(btnFirst);
 
         JButton btnPrevious = new JButton("Previous");
+        btnPrevious.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) 
+        	{
+        		int record = getCounter();  
+        		record -= 1;
+        		setCounter(record);
+        		
+        		//textArea.setText(String.valueOf(record));
+        		if (record >= 1) {
+        			textArea.setText(String.valueOf(record));        			
+        			try {
+        			
+        			Student S = StudentIO.previousRecord(record);
+					textArea.setText("The Previous Record" + "\n" +
+					"Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
+					"Program Name: " + String.valueOf(S.getProgram()) + "\n" + 
+					"Semester: " + String.valueOf(S.getSemester()) + "\n"  +
+					"Course List: " + S.getCourses());
+									
+					
+        			}
+					catch(IOException e1){					
+						JOptionPane.showMessageDialog(null, "Error! " + e1.getMessage());
+					}
+					
+        		}
+        		else 
+        		JOptionPane.showMessageDialog(null, "Error! There are no prev records");			
+				
+        	}
+        });
         btnPrevious.setForeground(new Color(0, 153, 0));
         btnPrevious.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnPrevious.setBounds(100, 187, 90, 24);
         contentPane.add(btnPrevious);
 
         JButton btnNext = new JButton("Next");
+        btnNext.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) 
+        	{
+        		int record = getCounter();  
+        		record += 1;
+        		setCounter(record);
+        		
+        		//textArea.setText(String.valueOf(record));
+        		if (record >= 1) {
+        			textArea.setText(String.valueOf(record));        			
+        			try {
+        			
+        			Student S = StudentIO.nextRecord(record);
+					textArea.setText("The Next Record" + "\n" +
+					"Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
+					"Program Name: " + String.valueOf(S.getProgram()) + "\n" + 
+					"Semester: " + String.valueOf(S.getSemester()) + "\n"  +
+					"Course List: " + S.getCourses());
+									
+					
+        			}
+					catch(IOException e1){					
+						JOptionPane.showMessageDialog(null, "Error! There are no more records \n" + e1.getMessage());
+					}
+					
+        		}        		
+        	}
+        });
         btnNext.setForeground(new Color(0, 153, 0));
         btnNext.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnNext.setBounds(200, 187, 80, 24);
@@ -240,4 +301,12 @@ public class MainGUI extends JFrame {
         textArea.setBounds(10, 220, 454, 319);
         contentPane.add(textArea);
     }
+
+	public int getCounter() {
+		return counter;
+	}
+
+	public void setCounter(int counter) {
+		this.counter = counter;
+	}
 }

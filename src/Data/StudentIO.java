@@ -77,17 +77,14 @@ public class StudentIO {
 			if (numRecs >= recNum){
 				//Move the file pointer in the beginning of rec to read
 				dIn.seek((recNum-1) * REC_SIZE);
-				
-				
+								
 				int Stud_ID = dIn.readInt(); // not reading all numbers 
 				/*
 				int Stud_ID = 0;
 				for (int i=0; i< STUD_ID_SIZE; i++) {
 					Stud_ID = dIn.readInt();
 				}
-				*/
-					
-				
+				*/	
 				
 				StringBuilder Prog = new StringBuilder();
 				for (int i=0; i<3; i++) {
@@ -113,17 +110,94 @@ public class StudentIO {
 				throw new IOException("Invalid - No records found");				
 		}
     }
-    	
 
-    			
+    public static Student previousRecord (int recNum)  throws IOException
+    {    
+    	Student S = new Student();
+    	try(RandomAccessFile dIn = new RandomAccessFile(bfile,"r")) {
+    		//Find number of records in a file
+			int numRecs = (int)dIn.length()/REC_SIZE;
 
-    			
-    				
-    
+			if (numRecs >= recNum){
+				//Move the file pointer in the beginning of rec to read
+				dIn.seek((recNum-1) * REC_SIZE);
+								
+				int Stud_ID = dIn.readInt(); // not reading all numbers 
+				/*
+				int Stud_ID = 0;
+				for (int i=0; i< STUD_ID_SIZE; i++) {
+					Stud_ID = dIn.readInt();
+				}
+				*/	
+				
+				StringBuilder Prog = new StringBuilder();
+				for (int i=0; i<3; i++) {
+					char nameChar = dIn.readChar();
+					Prog.append(nameChar);				
+				}
+				
+				int Sem = dIn.readInt();
+				
+				StringBuilder Courses = new StringBuilder();
+				for (int i=0; i<COURSE_SIZE; i++) {
+					char nameChar = dIn.readChar();
+					Courses.append(nameChar);				
+				}
+				
+				S.setStudentId(Stud_ID);
+				S.setProgram(Prog.toString());
+				S.setSemester(Sem);
+				S.setCourses(Courses.toString());	
+				return S;
+			}
+			else
+				throw new IOException("Invalid - No records found");				
+		}
+    }
 
-    public static void previousRecord () {    }
+    public static Student nextRecord (int recNum) throws IOException
+    {    
+    	Student S = new Student();
+    	try(RandomAccessFile dIn = new RandomAccessFile(bfile,"r")) {
+    		//Find number of records in a file
+			int numRecs = (int)dIn.length()/REC_SIZE;
 
-    public static void nextRecord () {    }
+			if (numRecs >= recNum){
+				//Move the file pointer in the beginning of rec to read
+				dIn.seek((recNum-1) * REC_SIZE);
+								
+				int Stud_ID = dIn.readInt(); // not reading all numbers 
+				/*
+				int Stud_ID = 0;
+				for (int i=0; i< STUD_ID_SIZE; i++) {
+					Stud_ID = dIn.readInt();
+				}
+				*/	
+				
+				StringBuilder Prog = new StringBuilder();
+				for (int i=0; i<3; i++) {
+					char nameChar = dIn.readChar();
+					Prog.append(nameChar);				
+				}
+				
+				int Sem = dIn.readInt();
+				
+				StringBuilder Courses = new StringBuilder();
+				for (int i=0; i<COURSE_SIZE; i++) {
+					char nameChar = dIn.readChar();
+					Courses.append(nameChar);				
+				}
+				
+				S.setStudentId(Stud_ID);
+				S.setProgram(Prog.toString());
+				S.setSemester(Sem);
+				S.setCourses(Courses.toString());	
+				return S;
+			}
+			else
+				throw new IOException("Invalid - No records found");				
+		}
+    }
 
     public static void lastRecord () {    }
 
