@@ -12,6 +12,8 @@ public class Student {
         this.semester = semester;
         this.courses = courses;
     }
+    
+    public Student() {	} //for use with buttons *Tim
 
     public int getStudentId() {
         return studentId;

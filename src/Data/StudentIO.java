@@ -65,7 +65,26 @@ public class StudentIO {
 
     }
 
-    public static void firstRecord () {    }
+    public static void firstRecord (int recNum) throws IOException
+    {        	 
+    	/*	
+    	Student S = new Student();
+    		try(RandomAccessFile dIn = new RandomAccessFile(myFile2,"r")) {
+
+    			//Find number of records in a file
+    			int numRecs = (int)dIn.length()/REC_SIZE;
+
+    			if (numRecs >= recNum){
+    				//Move the file pointer in the begining of rec to read
+    				dIn.seek((recNum-1) * REC_SIZE);
+    								
+    				StringBuilder fname = new StringBuilder();
+    				for (int i=0; i<FNAME_SIZE; i++) {
+    					char nameChar = dIn.readChar();
+    					fname.append(nameChar);				
+    				}
+    				*/
+    }
 
     public static void previousRecord () {    }
 
