@@ -191,13 +191,14 @@ public class MainGUI extends JFrame {
         btnFirst.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) 
         	{
-        		int record=1; 
+        		int record=1;
 				
 				try {
 					Student S = StudentIO.firstRecord(record);
-					textArea.setText(String.valueOf(S.getStudentId()) + " " + 
-					String.valueOf(S.getProgram()) + " " + String.valueOf(S.getSemester())
-					+ " " + S.getCourses());				
+					textArea.setText("Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
+					"Program Name: " + String.valueOf(S.getProgram()) + "\n" + 
+					"Semester: " + String.valueOf(S.getSemester()) + "\n"  +
+					"Course List: " + S.getCourses());				
 					
 				}
 				catch(IOException e1){					

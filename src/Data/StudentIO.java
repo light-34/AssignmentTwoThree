@@ -12,8 +12,8 @@ import java.util.Scanner;
 public class StudentIO {
     private static File file = new File("ProgramList.txt");
     private static File bfile = new File("students.dat");
-    private static final int REC_SIZE = 42; 
-    private static final int COURSE_SIZE = 28;    
+    private static final int REC_SIZE = 32; // was 42 before *Tim
+    private static final int COURSE_SIZE = 14;  // was 28 before   *Tim
 
     public static void saveData (Student stdReg) {
         try(RandomAccessFile rdAOut = new RandomAccessFile(bfile,"rw")) {
@@ -79,7 +79,11 @@ public class StudentIO {
 				
 				int Stud_ID = dIn.readInt();
 				
-				int Prog = dIn.readInt();
+				StringBuilder Prog = new StringBuilder();
+				for (int i=0; i<3; i++) {
+					char nameChar = dIn.readChar();
+					Prog.append(nameChar);				
+				}
 				
 				int Sem = dIn.readInt();
 				
@@ -90,7 +94,7 @@ public class StudentIO {
 				}
 				
 				S.setStudentId(Stud_ID);
-				S.setProgram(Prog);
+				S.setProgram(Prog.toString());
 				S.setSemester(Sem);
 				S.setCourses(Courses.toString());	
 				return S;
