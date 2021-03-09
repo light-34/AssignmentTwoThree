@@ -1,5 +1,6 @@
 package Data;
 
+
 import Business.Student;
 
 import java.io.EOFException;
@@ -11,8 +12,8 @@ import java.util.Scanner;
 public class StudentIO {
     private static File file = new File("ProgramList.txt");
     private static File bfile = new File("students.dat");
-    private static final int REC_SIZE = 42;
-    private static final int COURSE_SIZE = 28;
+    private static final int REC_SIZE = 42; 
+    private static final int COURSE_SIZE = 28;    
 
     public static void saveData (Student stdReg) {
         try(RandomAccessFile rdAOut = new RandomAccessFile(bfile,"rw")) {
@@ -65,26 +66,46 @@ public class StudentIO {
 
     }
 
-    public static void firstRecord (int recNum) throws IOException
+    public static Student firstRecord (int recNum) throws IOException
     {        	 
-    	/*	
     	Student S = new Student();
-    		try(RandomAccessFile dIn = new RandomAccessFile(myFile2,"r")) {
+    	try(RandomAccessFile dIn = new RandomAccessFile(bfile,"r")) {
+    		//Find number of records in a file
+			int numRecs = (int)dIn.length()/REC_SIZE;
 
-    			//Find number of records in a file
-    			int numRecs = (int)dIn.length()/REC_SIZE;
-
-    			if (numRecs >= recNum){
-    				//Move the file pointer in the begining of rec to read
-    				dIn.seek((recNum-1) * REC_SIZE);
-    								
-    				StringBuilder fname = new StringBuilder();
-    				for (int i=0; i<FNAME_SIZE; i++) {
-    					char nameChar = dIn.readChar();
-    					fname.append(nameChar);				
-    				}
-    				*/
+			if (numRecs >= recNum){
+				//Move the file pointer in the beginning of rec to read
+				dIn.seek((recNum-1) * REC_SIZE);
+				
+				int Stud_ID = dIn.readInt();
+				
+				int Prog = dIn.readInt();
+				
+				int Sem = dIn.readInt();
+				
+				StringBuilder Courses = new StringBuilder();
+				for (int i=0; i<COURSE_SIZE; i++) {
+					char nameChar = dIn.readChar();
+					Courses.append(nameChar);				
+				}
+				
+				S.setStudentId(Stud_ID);
+				S.setProgram(Prog);
+				S.setSemester(Sem);
+				S.setCourses(Courses.toString());	
+				return S;
+			}
+			else
+				throw new IOException("Invalid - No records found");				
+		}
     }
+    	
+
+    			
+
+    			
+    				
+    
 
     public static void previousRecord () {    }
 

@@ -1,6 +1,8 @@
 package Presentation;
 
+
 import Business.Student;
+
 import Data.StudentIO;
 
 import java.awt.EventQueue;
@@ -8,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JTextField;
@@ -18,6 +22,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.awt.event.ActionEvent;
 
 public class MainGUI extends JFrame {
 
@@ -181,6 +188,23 @@ public class MainGUI extends JFrame {
         contentPane.add(separator);
 
         JButton btnFirst = new JButton("First");
+        btnFirst.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) 
+        	{
+        		int record=1; 
+				
+				try {
+					Student S = StudentIO.firstRecord(record);
+					textArea.setText(String.valueOf(S.getStudentId()) + " " + 
+					String.valueOf(S.getProgram()) + " " + String.valueOf(S.getSemester())
+					+ " " + S.getCourses());				
+					
+				}
+				catch(IOException e1){					
+					JOptionPane.showMessageDialog(null, "Error ! " + e1.getMessage());
+				}		
+        	}
+        });
         btnFirst.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnFirst.setForeground(new Color(0, 153, 0));
         btnFirst.setBounds(10, 186, 80, 24);
