@@ -305,14 +305,16 @@ public class MainGUI extends JFrame {
         	public void actionPerformed(ActionEvent e) 
         	{
         		//textArea.setText(String.valueOf(getAddrecs())); // checker
+        		String records = null;
         		int record = 0;
 				try {
-					 record = StudentIO.readRec();					
-					 textArea.setText(String.valueOf(record));
+					 records = StudentIO.readRec();					
+					 textArea.setText(String.valueOf(records));
 				} catch (IOException e1) {					
 					e1.printStackTrace();
-				}        		
-        		/*
+				}      
+				record = Integer.parseInt(records);
+        		
         		try {
 					Student S = StudentIO.lastRecord(record);
 					textArea.setText("The Last Record" + "\n" +
@@ -325,7 +327,7 @@ public class MainGUI extends JFrame {
 				catch(IOException e1){					
 					JOptionPane.showMessageDialog(null, "Error ! " + e1.getMessage());
 				}
-				*/		
+						
         	}
         });
         btnLast.setForeground(new Color(0, 153, 0));

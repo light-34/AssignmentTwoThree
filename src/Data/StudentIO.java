@@ -45,15 +45,17 @@ public class StudentIO {
     	}
     }
     
-    public static int readRec() throws IOException { 
+    public static String readRec() throws IOException { 
     	//some issues here 
-		Scanner scanner = new Scanner(cfile);	// scanner to read file		
-		int recsAdded = 0; // create an array list to add to using scanner	
+		Scanner scanner = new Scanner(cfile);		
+		String recsAdded = null; 
+		//int count = 0;
 		while(scanner.hasNext())
 		{
-			recsAdded += 1 ; 						
+			recsAdded = scanner.nextLine();
+			//count += 1;
 		}
-		scanner.close();
+		scanner.close();		
 		return recsAdded;
 	}	
 
