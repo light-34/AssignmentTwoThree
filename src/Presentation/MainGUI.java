@@ -33,7 +33,9 @@ public class MainGUI extends JFrame {
     private JTextArea textArea;
     private final ButtonGroup buttonGroup = new ButtonGroup();
     private Business.Student student;
+    // tim vars below
     private int counter = 0;
+    private int addrecs = 0;
 
     /**
      * Launch the application.
@@ -139,6 +141,7 @@ public class MainGUI extends JFrame {
 
         JButton btnSave = new JButton("Save");
         btnSave.addActionListener(e -> {
+        	
             StringBuilder stringBuilder = new StringBuilder();
             int selSemester = 0;
 
@@ -159,6 +162,18 @@ public class MainGUI extends JFrame {
             student = new Student(StudentIO.idFinder(), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
 
             StudentIO.saveData(student);
+            
+            
+            // tim
+            
+            addrecs += 1;
+            try {
+				StudentIO.saveRecord(addrecs);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+            //tim 
 
         });
         btnSave.setForeground(Color.RED);
@@ -286,6 +301,33 @@ public class MainGUI extends JFrame {
         contentPane.add(btnNext);
 
         JButton btnLast = new JButton("Last");
+        btnLast.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) 
+        	{
+        		//textArea.setText(String.valueOf(getAddrecs())); // checker
+        		int record = 0;
+				try {
+					 record = StudentIO.readRec();					
+					 textArea.setText(String.valueOf(record));
+				} catch (IOException e1) {					
+					e1.printStackTrace();
+				}        		
+        		/*
+        		try {
+					Student S = StudentIO.lastRecord(record);
+					textArea.setText("The Last Record" + "\n" +
+					"Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
+					"Program Name: " + String.valueOf(S.getProgram()) + "\n" + 
+					"Semester: " + String.valueOf(S.getSemester()) + "\n"  +
+					"Course List: " + S.getCourses());				
+					
+				}
+				catch(IOException e1){					
+					JOptionPane.showMessageDialog(null, "Error ! " + e1.getMessage());
+				}
+				*/		
+        	}
+        });
         btnLast.setForeground(new Color(0, 153, 0));
         btnLast.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnLast.setBounds(290, 187, 80, 24);
@@ -302,11 +344,24 @@ public class MainGUI extends JFrame {
         contentPane.add(textArea);
     }
 
+	private void setaddrec() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	public int getCounter() {
 		return counter;
 	}
 
 	public void setCounter(int counter) {
 		this.counter = counter;
+	}
+
+	public int getAddrecs() {
+		return addrecs;
+	}
+
+	public void setAddrecs(int addrecs) {
+		this.addrecs = addrecs;
 	}
 }
