@@ -12,9 +12,10 @@ import java.util.Scanner;
 public class StudentIO {
     private static File file = new File("ProgramList.txt");
     private static File bfile = new File("students.dat");
-    private static final int REC_SIZE = 32; // was 42 before *Tim
-    private static final int COURSE_SIZE = 14;  // was 28 before   *Tim
-
+    private static final int REC_SIZE = 32; // was 42 before *Tim 32
+    private static final int COURSE_SIZE = 14;  // was 28 before   *Tim 14
+    //private static final int STUD_ID_SIZE = 4;
+    
     public static void saveData (Student stdReg) {
         try(RandomAccessFile rdAOut = new RandomAccessFile(bfile,"rw")) {
             //set pointer at the end of the file
@@ -77,7 +78,16 @@ public class StudentIO {
 				//Move the file pointer in the beginning of rec to read
 				dIn.seek((recNum-1) * REC_SIZE);
 				
-				int Stud_ID = dIn.readInt();
+				
+				int Stud_ID = dIn.readInt(); // not reading all numbers 
+				/*
+				int Stud_ID = 0;
+				for (int i=0; i< STUD_ID_SIZE; i++) {
+					Stud_ID = dIn.readInt();
+				}
+				*/
+					
+				
 				
 				StringBuilder Prog = new StringBuilder();
 				for (int i=0; i<3; i++) {

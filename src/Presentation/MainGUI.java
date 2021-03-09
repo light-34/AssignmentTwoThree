@@ -195,7 +195,8 @@ public class MainGUI extends JFrame {
 				
 				try {
 					Student S = StudentIO.firstRecord(record);
-					textArea.setText("Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
+					textArea.setText("The First Record" + "\n" +
+					"Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
 					"Program Name: " + String.valueOf(S.getProgram()) + "\n" + 
 					"Semester: " + String.valueOf(S.getSemester()) + "\n"  +
 					"Course List: " + S.getCourses());				
