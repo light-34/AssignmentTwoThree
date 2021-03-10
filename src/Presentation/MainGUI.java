@@ -252,12 +252,17 @@ public class MainGUI extends JFrame {
 					
         			}
 					catch(IOException e1){					
-						JOptionPane.showMessageDialog(null, "Error! " + e1.getMessage());
+						JOptionPane.showMessageDialog(null, "Error! " + e1.getMessage());						
 					}
 					
         		}
-        		else 
-        		JOptionPane.showMessageDialog(null, "Error! There are no prev records");			
+        		else
+        		{
+        			JOptionPane.showMessageDialog(null, "Error! There are no prev records");
+        			record += 1;
+        			setCounter(record);
+        		}
+        		
 				
         	}
         });
@@ -270,26 +275,25 @@ public class MainGUI extends JFrame {
         btnNext.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) 
         	{
-        		int record = getCounter();  
+        		int record = getCounter();        		
         		record += 1;
-        		setCounter(record);
+        		setCounter(record);        		
         		
-        		//textArea.setText(String.valueOf(record));
-        		if (record >= 1) {
-        			textArea.setText(String.valueOf(record));        			
-        			try {
-        			
-        			Student S = StudentIO.nextRecord(record);
-					textArea.setText("The Next Record" + "\n" +
-					"Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
-					"Program Name: " + String.valueOf(S.getProgram()) + "\n" + 
-					"Semester: " + String.valueOf(S.getSemester()) + "\n"  +
-					"Course List: " + S.getCourses());
-									
-					
+        		if (record >= 1) {        			        			
+        			try 
+        			{
+	        			Student S = StudentIO.nextRecord(record);
+						textArea.setText("The Next Record" + "\n" +
+						"Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
+						"Program Name: " + String.valueOf(S.getProgram()) + "\n" + 
+						"Semester: " + String.valueOf(S.getSemester()) + "\n"  +
+						"Course List: " + S.getCourses());
         			}
 					catch(IOException e1){					
-						JOptionPane.showMessageDialog(null, "Error! There are no more records \n" + e1.getMessage());
+						JOptionPane.showMessageDialog(null, "Error! There are no more records \n" 
+															+ e1.getMessage());
+						record -= 1;
+		        		setCounter(record);						
 					}
 					
         		}        		
@@ -310,10 +314,13 @@ public class MainGUI extends JFrame {
 				try {
 					 records = StudentIO.readRec();					
 					 textArea.setText(String.valueOf(records));
+					 
 				} catch (IOException e1) {					
 					e1.printStackTrace();
-				}      
-				record = Integer.parseInt(records);
+				}  
+				
+				record = Integer.parseInt(records);				
+        		setCounter(record);
         		
         		try {
 					Student S = StudentIO.lastRecord(record);

@@ -37,6 +37,7 @@ public class StudentIO {
 
     }
     
+    //Tim Below 
     public static void saveRecord (int recInfo) throws IOException 
     {
     	try(PrintWriter writer = new PrintWriter(new FileWriter(cfile, true))) 
@@ -58,6 +59,7 @@ public class StudentIO {
 		scanner.close();		
 		return recsAdded;
 	}	
+    //Tim above
 
     public static String displayData () { // I need to add an argument to call recorda according to program
         int stdId = 0;
