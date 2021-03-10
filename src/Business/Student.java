@@ -2,22 +2,34 @@ package Business;
 
 public class Student {
     private int studentId;
+    //private String studentId;
     private Object program;
     private int semester;
     private String courses;
 
+    /*
+    public Student(String studentId, Object program, int semester, String courses) {
+        this.studentId = studentId;
+        this.program = program;
+        this.semester = semester;
+        this.courses = courses;
+    }
+    */
+    
     public Student(int studentId, Object program, int semester, String courses) {
         this.studentId = studentId;
         this.program = program;
         this.semester = semester;
         this.courses = courses;
     }
+    
+    public Student() {	} //for use with buttons *Tim
 
-    public int getStudentId() {
+    public int getStudentId() { // changed to string
         return studentId;
     }
 
-    public void setStudentId(int studentId) {
+    public void setStudentId(int studentId) { //changed to string 
         this.studentId = studentId;
     }
 

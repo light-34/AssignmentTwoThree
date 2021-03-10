@@ -1,12 +1,16 @@
 package Presentation;
 
+
 import Business.Student;
+
 import Data.StudentIO;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JTextField;
@@ -17,6 +21,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JButton;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.awt.event.ActionEvent;
 
 public class MainGUI extends JFrame {
 
@@ -25,6 +32,9 @@ public class MainGUI extends JFrame {
     private JTextArea textArea;
     private final ButtonGroup buttonGroup = new ButtonGroup();
     private Business.Student student;
+    // tim vars below
+    private int counter = 0;
+    private int addrecs = 0;
 
     /**
      * Launch the application.
@@ -79,6 +89,9 @@ public class MainGUI extends JFrame {
         contentPane.add(lblCourses);
 
         txtStudentId = new JTextField();
+        txtStudentId.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtStudentId.setText("Will Be Automatically Assigned!");
+        txtStudentId.setEditable(false); // made not editable for id is pre set 
         txtStudentId.setBounds(125, 14, 228, 24);
         contentPane.add(txtStudentId);
         txtStudentId.setColumns(10);
@@ -130,6 +143,10 @@ public class MainGUI extends JFrame {
 
         JButton btnSave = new JButton("Save");
         btnSave.addActionListener(e -> {
+        	
+        	//added person id 
+        	//String Stud_ID = txtStudentId.getText();
+        	
             StringBuilder stringBuilder = new StringBuilder();
             int selSemester = 0;
 
@@ -147,9 +164,29 @@ public class MainGUI extends JFrame {
             if(chckbxC5.isSelected()) stringBuilder.append("C5");
             System.out.println(stringBuilder.toString());
 
+            // issues here because I changed stud id to string type not int - Tim 
             student = new Student(StudentIO.idFinder(), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
-
+            
+            //student = new Student(Stud_ID, comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
+            //Stud_ID as string above - Tim
+            
+            JOptionPane.showMessageDialog(null,"Student ID: " + StudentIO.idFinder() + "\n" + 
+            "Program: " + comboBox.getSelectedItem() + "\n" +
+            "Semester: " + selSemester + "\n"+ 
+            "Courses: " + stringBuilder.toString());
+            
             StudentIO.saveData(student);
+            
+            
+            // Tim  - keeps track of records added for quick reference           
+            addrecs = 1;
+            try {
+				StudentIO.saveRecord(addrecs);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+            // Tim 
 
         });
         btnSave.setForeground(Color.RED);
@@ -180,30 +217,157 @@ public class MainGUI extends JFrame {
         contentPane.add(separator);
 
         JButton btnFirst = new JButton("First");
+        btnFirst.setToolTipText("Returns Oldest Record");
+        btnFirst.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) 
+        	{
+        		setCounter(1);
+        		int record=1;        		
+				
+				try {
+					Student S = StudentIO.firstRecord(record);
+					textArea.setText("The First Record" + "\n" +
+					"Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
+					"Program Name: " + String.valueOf(S.getProgram()) + "\n" + 
+					"Semester: " + String.valueOf(S.getSemester()) + "\n"  +
+					"Course List: " + S.getCourses());				
+					
+				}
+				catch(IOException e1){					
+					JOptionPane.showMessageDialog(null, "Error ! " + e1.getMessage());
+				}		
+        	}
+        });
         btnFirst.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnFirst.setForeground(new Color(0, 153, 0));
         btnFirst.setBounds(10, 186, 80, 24);
         contentPane.add(btnFirst);
 
         JButton btnPrevious = new JButton("Previous");
+        btnPrevious.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) 
+        	{
+        		int record = getCounter();  
+        		record -= 1;
+        		setCounter(record);
+        		
+        		//textArea.setText(String.valueOf(record));
+        		if (record >= 1) {
+        			textArea.setText(String.valueOf(record));        			
+        			try {
+        			
+        			Student S = StudentIO.previousRecord(record);
+					textArea.setText("The Previous Record" + "\n" +
+					"Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
+					"Program Name: " + String.valueOf(S.getProgram()) + "\n" + 
+					"Semester: " + String.valueOf(S.getSemester()) + "\n"  +
+					"Course List: " + S.getCourses());
+									
+					
+        			}
+					catch(IOException e1){					
+						JOptionPane.showMessageDialog(null, "Error! " + e1.getMessage());						
+					}
+					
+        		}
+        		else
+        		{
+        			JOptionPane.showMessageDialog(null, "Error! There are no prev records");
+        			record += 1;
+        			setCounter(record);
+        		}
+        		
+				
+        	}
+        });
         btnPrevious.setForeground(new Color(0, 153, 0));
         btnPrevious.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnPrevious.setBounds(100, 187, 90, 24);
         contentPane.add(btnPrevious);
 
         JButton btnNext = new JButton("Next");
+        btnNext.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) 
+        	{
+        		int record = getCounter();        		
+        		record += 1;
+        		setCounter(record);        		
+        		
+        		if (record >= 1) {        			        			
+        			try 
+        			{
+	        			Student S = StudentIO.nextRecord(record);
+						textArea.setText("The Next Record" + "\n" +
+						"Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
+						"Program Name: " + String.valueOf(S.getProgram()) + "\n" + 
+						"Semester: " + String.valueOf(S.getSemester()) + "\n"  +
+						"Course List: " + S.getCourses());
+        			}
+					catch(IOException e1){					
+						JOptionPane.showMessageDialog(null, "Error! There are no more records \n" 
+															+ e1.getMessage());
+						record -= 1;
+		        		setCounter(record);						
+					}
+					
+        		}        		
+        	}
+        });
         btnNext.setForeground(new Color(0, 153, 0));
         btnNext.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnNext.setBounds(200, 187, 80, 24);
         contentPane.add(btnNext);
 
         JButton btnLast = new JButton("Last");
+        btnLast.setToolTipText("Returns Most Rececnt Record");
+        btnLast.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) 
+        	{
+        		//textArea.setText(String.valueOf(getAddrecs())); // checker
+        		Object[] records = null;
+        		int record = 0;
+				try {
+					 records = StudentIO.readRec();	
+					 for(int i = 0; i < records.length; i++)
+					 {
+						 record += 1;
+					 }
+					 textArea.setText(String.valueOf(record)); // checker 
+					 
+				} catch (IOException e1) {					
+					e1.printStackTrace();
+				} 		
+        		setCounter(record);
+        	
+        		try {
+					Student S = StudentIO.lastRecord(record);
+					textArea.setText("The Last Record" + "\n" +
+					"Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
+					"Program Name: " + String.valueOf(S.getProgram()) + "\n" + 
+					"Semester: " + String.valueOf(S.getSemester()) + "\n"  +
+					"Course List: " + S.getCourses());				
+					
+				}
+				catch(IOException e1){					
+					JOptionPane.showMessageDialog(null, "Error ! " + e1.getMessage());
+				}
+				
+						
+        	}
+        });
         btnLast.setForeground(new Color(0, 153, 0));
         btnLast.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnLast.setBounds(290, 187, 80, 24);
         contentPane.add(btnLast);
 
         JButton btnUpdate = new JButton("Update");
+        btnUpdate.setToolTipText("Update Current Record");
+        btnUpdate.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) 
+        	{
+        		// needs work 
+        	}
+        });
         btnUpdate.setForeground(new Color(0, 153, 0));
         btnUpdate.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnUpdate.setBounds(380, 187, 80, 24);
@@ -213,4 +377,25 @@ public class MainGUI extends JFrame {
         textArea.setBounds(10, 220, 454, 319);
         contentPane.add(textArea);
     }
+
+	private void setaddrec() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int getCounter() {
+		return counter;
+	}
+
+	public void setCounter(int counter) {
+		this.counter = counter;
+	}
+
+	public int getAddrecs() {
+		return addrecs;
+	}
+
+	public void setAddrecs(int addrecs) {
+		this.addrecs = addrecs;
+	}
 }
