@@ -16,12 +16,16 @@ public class StudentIO {
     private static File file = new File("ProgramList.txt");
     private static File bfile = new File("students.dat");
     private static File cfile = new File("numRecs.txt");
-    private static final int REC_SIZE = 36;// 40 (or 4) + 28 + 4 + (object? 6? ) = 72 or 78 
-    //(or 36 for int) // was 42 before *Tim 32
-    private static final int COURSE_SIZE = 14;// 14 * 2 = 28   // was 28 before   *Tim 14
-    //private static final int STUD_ID_SIZE = 20; // 20 * 2 = 40 // for string - 4 for int 
-    // int is 4 - for semester 20
+    private static final int REC_SIZE = 42; // correct and working  
+    // 40 + 28 + 4 + 6 = 78 - (not correct)    
+    private static final int COURSE_SIZE = 14; // was 28 before - Tim
+    // 14 * 2 = 28  - for rec size     
+    //private static final int STUD_ID_SIZE = 20; 
+    // 20 * 2 = 40 
+    
+    // int is 4 - for semester 
     // how big is the prog object??? 3? *2 6?
+    // so rec size should be 6 + 4 + 4 + 28 = 42
     
     /*
     public static void saveData (Student stdReg) {
