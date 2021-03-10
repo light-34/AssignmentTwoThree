@@ -336,6 +336,12 @@ public class MainGUI extends JFrame {
         contentPane.add(btnLast);
 
         JButton btnUpdate = new JButton("Update");
+        btnUpdate.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) 
+        	{
+        		
+        	}
+        });
         btnUpdate.setForeground(new Color(0, 153, 0));
         btnUpdate.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnUpdate.setBounds(380, 187, 80, 24);
