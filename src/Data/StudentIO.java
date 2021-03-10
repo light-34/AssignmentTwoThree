@@ -283,7 +283,41 @@ public class StudentIO {
 		}
     }
 
-    public static void updateRecord () {    }
+    public static Student updateRecord (int recNum) throws IOException
+    {    
+    	/*
+    	
+    	Student S = new Student();
+    	try(RandomAccessFile dIn = new RandomAccessFile(bfile,"rw")) 
+    	{    		
+			int numRecs = (int)dIn.length()/REC_SIZE;
+
+			if (numRecs >= recNum)
+			{
+				dIn.seek((recNum-1) * REC_SIZE);				
+			}
+			else
+				throw new IOException("Invalid - No records found");				
+		}
+		
+		// from online found possible update schema 
+		 * 
+		 * 
+		 *     private void changeRecord(int record, String name, int points)
+            throws IOException {
+        try (RandomAccessFile file = new RandomAccessFile(filename, "rw")) {
+            // "-1" because the first record is at byte 0:
+            file.seek(RECORD_SIZE * (record-1));
+            file.writeChars(name);
+            file.writeInt(points);
+        }
+        
+        
+    }
+    	
+    	*/
+    	return null;
+    }
 
 
 
