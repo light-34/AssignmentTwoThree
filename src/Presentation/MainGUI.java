@@ -142,6 +142,9 @@ public class MainGUI extends JFrame {
         JButton btnSave = new JButton("Save");
         btnSave.addActionListener(e -> {
         	
+        	//added person id 
+        	String Stud_ID = txtStudentId.getText();
+        	
             StringBuilder stringBuilder = new StringBuilder();
             int selSemester = 0;
 
@@ -159,13 +162,15 @@ public class MainGUI extends JFrame {
             if(chckbxC5.isSelected()) stringBuilder.append("C5");
             System.out.println(stringBuilder.toString());
 
-            student = new Student(StudentIO.idFinder(), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
-
+            // issues here because i changed stud id to string type not int - Tim 
+            //student = new Student(StudentIO.idFinder(), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
+            
+            student = new Student(Stud_ID, comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
+            //Stud_ID as string above - Tim 
             StudentIO.saveData(student);
             
             
-            // tim
-            
+            // Tim            
             addrecs = 1;
             try {
 				StudentIO.saveRecord(addrecs);
@@ -173,7 +178,7 @@ public class MainGUI extends JFrame {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-            //tim 
+            // Tim 
 
         });
         btnSave.setForeground(Color.RED);
