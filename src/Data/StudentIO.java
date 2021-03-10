@@ -16,9 +16,10 @@ public class StudentIO {
     private static File file = new File("ProgramList.txt");
     private static File bfile = new File("students.dat");
     private static File cfile = new File("numRecs.txt");
-    private static final int REC_SIZE = 78;// 40 + 28 + 4 + (object? 6? ) = 72 or 78 // was 42 before *Tim 32
+    private static final int REC_SIZE = 36;// 40 (or 4) + 28 + 4 + (object? 6? ) = 72 or 78 
+    //(or 36 for int) // was 42 before *Tim 32
     private static final int COURSE_SIZE = 14;// 14 * 2 = 28   // was 28 before   *Tim 14
-    private static final int STUD_ID_SIZE = 20; // 20 * 2 = 40
+    //private static final int STUD_ID_SIZE = 20; // 20 * 2 = 40 // for string - 4 for int 
     // int is 4 - for semester 20
     // how big is the prog object??? 3? *2 6?
     
@@ -44,7 +45,7 @@ public class StudentIO {
     public static void saveData (Student stdReg) {
         try(RandomAccessFile rdAOut = new RandomAccessFile(bfile,"rw")) {
         	rdAOut.seek(rdAOut.length());
-        	
+        	/*
 			if (stdReg.getStudentId().length() < STUD_ID_SIZE) {
 				int numOfChar = STUD_ID_SIZE - stdReg.getStudentId().length();
 				StringBuilder tempName = new StringBuilder(stdReg.getStudentId());
@@ -55,7 +56,10 @@ public class StudentIO {
 			
 			String format1 = "%." + STUD_ID_SIZE + "s";
 			
-			rdAOut.writeChars(String.format(format1, stdReg.getStudentId()));
+			*/
+			
+			//rdAOut.writeChars(String.format(format1, stdReg.getStudentId()));
+        	rdAOut.writeInt(stdReg.getStudentId());
 			rdAOut.writeChars((String)stdReg.getProgram());
             rdAOut.writeInt(stdReg.getSemester());
             
@@ -156,21 +160,23 @@ public class StudentIO {
 				//Move the file pointer in the beginning of rec to read
 				dIn.seek((recNum-1) * REC_SIZE);
 				
-				/*				
+								
 				int Stud_ID = dIn.readInt(); // not reading all numbers 
 				
-				
+				/*
 				int Stud_ID = 0;
 				for (int i=0; i< STUD_ID_SIZE; i++) {
 					Stud_ID = dIn.readInt();
 				}
-				*/	
+				
+					
 				StringBuilder Stud = new StringBuilder();
 				for (int i=0; i<STUD_ID_SIZE; i++) {
 					char nameChar = dIn.readChar();
 					Stud.append(nameChar);				
 				}
 				
+				*/
 				StringBuilder Prog = new StringBuilder();
 				for (int i=0; i<3; i++) {
 					char nameChar = dIn.readChar();
@@ -185,8 +191,8 @@ public class StudentIO {
 					Courses.append(nameChar);				
 				}
 				
-				//S.setStudentId(Stud_ID);
-				S.setStudentId(Stud.toString());
+				S.setStudentId(Stud_ID);
+				//S.setStudentId(Stud.toString());
 				S.setProgram(Prog.toString());
 				S.setSemester(Sem);
 				S.setCourses(Courses.toString());	
@@ -208,20 +214,21 @@ public class StudentIO {
 				//Move the file pointer in the beginning of rec to read
 				dIn.seek((recNum-1) * REC_SIZE);
 				
-				/*				
+								
 				int Stud_ID = dIn.readInt(); // not reading all numbers 
 				
-								
+				/*				
 				int Stud_ID = 0;
 				for (int i=0; i< STUD_ID_SIZE; i++) {
 					Stud_ID = dIn.readInt();
 				}
-				*/	
+					
 				StringBuilder Stud = new StringBuilder();
 				for (int i=0; i<STUD_ID_SIZE; i++) {
 					char nameChar = dIn.readChar();
 					Stud.append(nameChar);				
 				}
+				*/
 				
 				StringBuilder Prog = new StringBuilder();
 				for (int i=0; i<3; i++) {
@@ -237,8 +244,8 @@ public class StudentIO {
 					Courses.append(nameChar);				
 				}
 				
-				//S.setStudentId(Stud_ID);
-				S.setStudentId(Stud.toString());
+				S.setStudentId(Stud_ID);
+				//S.setStudentId(Stud.toString());
 				S.setProgram(Prog.toString());
 				S.setSemester(Sem);
 				S.setCourses(Courses.toString());	
@@ -260,20 +267,21 @@ public class StudentIO {
 				//Move the file pointer in the beginning of rec to read
 				dIn.seek((recNum-1) * REC_SIZE);
 				
-				/*				
+								
 				int Stud_ID = dIn.readInt(); // not reading all numbers 
-				
+				/*
 								
 				int Stud_ID = 0;
 				for (int i=0; i< STUD_ID_SIZE; i++) {
 					Stud_ID = dIn.readInt();
 				}
-				*/	
+					
 				StringBuilder Stud = new StringBuilder();
 				for (int i=0; i<STUD_ID_SIZE; i++) {
 					char nameChar = dIn.readChar();
 					Stud.append(nameChar);				
 				}
+				*/
 				
 				StringBuilder Prog = new StringBuilder();
 				for (int i=0; i<3; i++) {
@@ -289,8 +297,8 @@ public class StudentIO {
 					Courses.append(nameChar);				
 				}
 				
-				//S.setStudentId(Stud_ID);
-				S.setStudentId(Stud.toString());
+				S.setStudentId(Stud_ID);
+				//S.setStudentId(Stud.toString());
 				S.setProgram(Prog.toString());
 				S.setSemester(Sem);
 				S.setCourses(Courses.toString());	
@@ -312,21 +320,23 @@ public class StudentIO {
 				//Move the file pointer in the beginning of rec to read
 				dIn.seek((recNum-1) * REC_SIZE);
 				
-				/*				
+								
 				int Stud_ID = dIn.readInt(); // not reading all numbers 
-				
+				/*
 								
 				int Stud_ID = 0;
 				for (int i=0; i< STUD_ID_SIZE; i++) {
 					Stud_ID = dIn.readInt();
 				}
-				*/
+				
 				
 				StringBuilder Stud = new StringBuilder();
 				for (int i=0; i<STUD_ID_SIZE; i++) {
 					char nameChar = dIn.readChar();
 					Stud.append(nameChar);				
 				}
+				*/
+				
 				
 				StringBuilder Prog = new StringBuilder();
 				for (int i=0; i<3; i++) {
@@ -342,8 +352,8 @@ public class StudentIO {
 					Courses.append(nameChar);				
 				}
 				
-				//S.setStudentId(Stud_ID);
-				S.setStudentId(Stud.toString());
+				S.setStudentId(Stud_ID);
+				//S.setStudentId(Stud.toString());
 				S.setProgram(Prog.toString());
 				S.setSemester(Sem);
 				S.setCourses(Courses.toString());	
@@ -363,15 +373,15 @@ public class StudentIO {
     	 * 		update where this.id matched record id
     	 * 		use save below
     	 */
-    	/*
-    	if() {
+    	
+    	
     		try(RandomAccessFile rdAOut = new RandomAccessFile(bfile,"rw")) 
-    		{
+    		{    
 	            //set pointer at the end of the file
 	            rdAOut.seek(rdAOut.length());
 	
 	            //Write data from Student class into the binary file
-	            rdAOut.writeInt(recUp.getStudentId());
+	           // rdAOut.writeInt(recUp.getStudentId());
 	            rdAOut.writeChars((String)recUp.getProgram());
 	            rdAOut.writeInt(recUp.getSemester());
 	            rdAOut.writeChars(recUp.getCourses());
@@ -379,12 +389,7 @@ public class StudentIO {
     		catch (IOException ex) 
     		{
     			System.out.println("Error! File is not found");
-    		}
-    	}
-    	else 
-    		throw new IOException("Invalid - Record not found");
-    	*/   	
-    	
+    		}  
     }
 
 

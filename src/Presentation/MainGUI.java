@@ -90,6 +90,7 @@ public class MainGUI extends JFrame {
         contentPane.add(lblCourses);
 
         txtStudentId = new JTextField();
+        txtStudentId.setEditable(false); // made not editable for id is pre set 
         txtStudentId.setBounds(125, 14, 228, 24);
         contentPane.add(txtStudentId);
         txtStudentId.setColumns(10);
@@ -143,7 +144,7 @@ public class MainGUI extends JFrame {
         btnSave.addActionListener(e -> {
         	
         	//added person id 
-        	String Stud_ID = txtStudentId.getText();
+        	//String Stud_ID = txtStudentId.getText();
         	
             StringBuilder stringBuilder = new StringBuilder();
             int selSemester = 0;
@@ -163,11 +164,12 @@ public class MainGUI extends JFrame {
             System.out.println(stringBuilder.toString());
 
             // issues here because I changed stud id to string type not int - Tim 
-            //student = new Student(StudentIO.idFinder(), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
+            student = new Student(StudentIO.idFinder(), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
             
-            student = new Student(Stud_ID, comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
+            //student = new Student(Stud_ID, comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
             //Stud_ID as string above - Tim
-            JOptionPane.showMessageDialog(null,"Student ID: " + Stud_ID + "\n" + 
+            
+            JOptionPane.showMessageDialog(null,"Student ID: " + StudentIO.idFinder() + "\n" + 
             "Program: " + comboBox.getSelectedItem() + "\n" +
             "Semester: " + selSemester + "\n"+ 
             "Courses: " + stringBuilder.toString());
@@ -175,7 +177,7 @@ public class MainGUI extends JFrame {
             StudentIO.saveData(student);
             
             
-            // Tim            
+            // Tim  - keeps track of records added for quick reference           
             addrecs = 1;
             try {
 				StudentIO.saveRecord(addrecs);
@@ -359,7 +361,7 @@ public class MainGUI extends JFrame {
         btnUpdate.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) 
         	{
-        		
+        		// needs work 
         	}
         });
         btnUpdate.setForeground(new Color(0, 153, 0));
