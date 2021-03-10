@@ -162,11 +162,16 @@ public class MainGUI extends JFrame {
             if(chckbxC5.isSelected()) stringBuilder.append("C5");
             System.out.println(stringBuilder.toString());
 
-            // issues here because i changed stud id to string type not int - Tim 
+            // issues here because I changed stud id to string type not int - Tim 
             //student = new Student(StudentIO.idFinder(), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
             
             student = new Student(Stud_ID, comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
-            //Stud_ID as string above - Tim 
+            //Stud_ID as string above - Tim
+            JOptionPane.showMessageDialog(null,"Student ID: " + Stud_ID + "\n" + 
+            "Program: " + comboBox.getSelectedItem() + "\n" +
+            "Semester: " + selSemester + "\n"+ 
+            "Courses: " + stringBuilder.toString());
+            
             StudentIO.saveData(student);
             
             
