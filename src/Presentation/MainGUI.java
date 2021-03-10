@@ -90,6 +90,8 @@ public class MainGUI extends JFrame {
         contentPane.add(lblCourses);
 
         txtStudentId = new JTextField();
+        txtStudentId.setFont(new Font("Tahoma", Font.BOLD, 12));
+        txtStudentId.setText("Will Be Automatically Assigned!");
         txtStudentId.setEditable(false); // made not editable for id is pre set 
         txtStudentId.setBounds(125, 14, 228, 24);
         contentPane.add(txtStudentId);
@@ -216,6 +218,7 @@ public class MainGUI extends JFrame {
         contentPane.add(separator);
 
         JButton btnFirst = new JButton("First");
+        btnFirst.setToolTipText("Returns Oldest Record");
         btnFirst.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) 
         	{
@@ -317,6 +320,7 @@ public class MainGUI extends JFrame {
         contentPane.add(btnNext);
 
         JButton btnLast = new JButton("Last");
+        btnLast.setToolTipText("Returns Most Rececnt Record");
         btnLast.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) 
         	{
@@ -358,6 +362,7 @@ public class MainGUI extends JFrame {
         contentPane.add(btnLast);
 
         JButton btnUpdate = new JButton("Update");
+        btnUpdate.setToolTipText("Update Current Record");
         btnUpdate.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) 
         	{
