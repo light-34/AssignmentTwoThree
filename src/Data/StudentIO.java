@@ -16,12 +16,9 @@ public class StudentIO {
     private static File file = new File("ProgramList.txt");
     private static File bfile = new File("students.dat");
     private static File cfile = new File("numRecs.txt");
-    private static final int REC_SIZE = 42; // correct and working  
-    // 40 + 28 + 4 + 6 = 78 - (not correct)    
-    private static final int COURSE_SIZE = 14; // was 28 before - Tim
-    // 14 * 2 = 28  - for rec size     
-    //private static final int STUD_ID_SIZE = 20; 
-    // 20 * 2 = 40 
+    private static final int REC_SIZE = 42;  
+    private static final int COURSE_SIZE = 14; 
+    public static ArrayList<Student> arrayList = new ArrayList<>();
     
     // int is 4 - for semester 
     // how big is the prog object??? 3? *2 6?
@@ -48,35 +45,28 @@ public class StudentIO {
     
     public static void saveData (Student stdReg) {
         try(RandomAccessFile rdAOut = new RandomAccessFile(bfile,"rw")) {
-        	rdAOut.seek(rdAOut.length());
-        	/*
-			if (stdReg.getStudentId().length() < STUD_ID_SIZE) {
-				int numOfChar = STUD_ID_SIZE - stdReg.getStudentId().length();
-				StringBuilder tempName = new StringBuilder(stdReg.getStudentId());
-				for (int i=0; i < numOfChar; i++)
-					tempName.append('\0');
-				stdReg.setStudentId(tempName.toString());
-			}
-			
-			String format1 = "%." + STUD_ID_SIZE + "s";
-			
-			*/
-			
-			//rdAOut.writeChars(String.format(format1, stdReg.getStudentId()));
-        	rdAOut.writeInt(stdReg.getStudentId());
-			rdAOut.writeChars((String)stdReg.getProgram());
-            rdAOut.writeInt(stdReg.getSemester());
-            
-            if (stdReg.getCourses().length() < COURSE_SIZE) {
-				int numOfChar = COURSE_SIZE - stdReg.getCourses().length();
-				StringBuilder tempName = new StringBuilder(stdReg.getCourses());
-				for (int i=0; i < numOfChar; i++)
-					tempName.append('\0');
-				stdReg.setCourses(tempName.toString());
-			}
-            String format2 = "%." + COURSE_SIZE + "s";
-            rdAOut.writeChars(String.format(format2, stdReg.getCourses()));
 
+            //set pointer at the end of the file
+            rdAOut.seek(rdAOut.length());
+
+            //Write data from Student class into the binary file
+            rdAOut.writeInt(stdReg.getStudentId());
+            rdAOut.writeChars((String)stdReg.getProgram());
+            rdAOut.writeInt(stdReg.getSemester());
+
+            if (stdReg.getCourses().length() < COURSE_SIZE) {
+                StringBuilder crsStrBuild = new StringBuilder(stdReg.getCourses());
+                int numChars = COURSE_SIZE - stdReg.getCourses().length();
+                crsStrBuild.append("\0".repeat(Math.max(0, numChars)));
+                stdReg.setCourses(crsStrBuild.toString());
+            }
+            rdAOut.writeChars(stdReg.getCourses());
+
+            //See the lenght of the data
+            System.out.println("The length is " + rdAOut.length());
+
+        } catch (EOFException ex) {
+            System.out.println("End of the file");
         } catch (IOException ex) {
             System.out.println("Error! File is not found");
         }
@@ -119,9 +109,10 @@ public class StudentIO {
 	}
     //Tim above
 
-    public static String displayData () { // I need to add an argument to call recorda according to program
+    public static void displayData () { // I need to add an argument to call recorda according to program
         int stdId = 0;
         int semester = 0;
+        StringBuilder result = new StringBuilder();
         StringBuilder strBuilProg = new StringBuilder();
         StringBuilder strBuilCours = new StringBuilder();
 
@@ -129,18 +120,25 @@ public class StudentIO {
             rdAIn.seek(0);
             while (bfile.length() != -1) {
                 stdId = rdAIn.readInt();
-
-                for (int i = 0; i < 3; i++) {
+                System.out.println("After id pointer is " + rdAIn.getFilePointer());
+                for (int j = 0; j < 3; j++) {
                     char progChar = rdAIn.readChar();
                     strBuilProg.append(progChar);
                 }
-
+                System.out.println("After Program pointer is " + rdAIn.getFilePointer());
                 semester = rdAIn.readInt();
+                System.out.println("After Semester pointer is " + rdAIn.getFilePointer());
 
-                for (int i = 0; i < COURSE_SIZE; i++) {
+                for (int k = 0; k < COURSE_SIZE; k++) {
                     char courseChar = rdAIn.readChar();
                     strBuilCours.append(courseChar);
                 }
+                System.out.println("After Courses pointer is " + rdAIn.getFilePointer());
+                arrayList.add(new Student(stdId,strBuilProg.toString(),semester,strBuilCours.toString()));
+
+                strBuilCours.setLength(0);
+                strBuilProg.setLength(0);
+
             }
 
         } catch (EOFException ex) {
@@ -148,9 +146,6 @@ public class StudentIO {
         } catch (IOException ex) {
             System.out.println("Error! File is not found");
         }
-
-        return stdId + " " + strBuilProg.toString() + " " + semester + " " + strBuilCours.toString() + "\n";
-
     }
 
     public static Student firstRecord (int recNum) throws IOException

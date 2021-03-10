@@ -2,19 +2,9 @@ package Business;
 
 public class Student {
     private int studentId;
-    //private String studentId;
     private Object program;
     private int semester;
     private String courses;
-
-    /*
-    public Student(String studentId, Object program, int semester, String courses) {
-        this.studentId = studentId;
-        this.program = program;
-        this.semester = semester;
-        this.courses = courses;
-    }
-    */
     
     public Student(int studentId, Object program, int semester, String courses) {
         this.studentId = studentId;

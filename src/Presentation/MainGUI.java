@@ -195,8 +195,16 @@ public class MainGUI extends JFrame {
         contentPane.add(btnSave);
 
         JButton btnDisplay = new JButton("Display");
-        btnDisplay.addActionListener(e ->  {
-            textArea.setText(StudentIO.displayData());
+        btnDisplay.addActionListener(e ->  {textArea.setText("");
+        System.out.println("Button is working");
+        StringBuilder list = new StringBuilder();
+        StudentIO.displayData();
+        for (Student k: StudentIO.arrayList
+             ) {
+            System.out.println("It is in the foreach loop");
+            list.append(k.getStudentId()).append(" ").append(k.getProgram()).append(" ").append(k.getSemester()).append(" ").append(k.getCourses()).append("\n");
+        }
+        textArea.setText(list.toString());
         });
         btnDisplay.setForeground(Color.RED);
         btnDisplay.setFont(new Font("Tahoma", Font.BOLD, 11));
