@@ -46,19 +46,31 @@ public class StudentIO {
     	}
     }
     
+    /*
     public static String readRec() throws IOException { 
     	//some issues here 
 		Scanner scanner = new Scanner(cfile);		
 		String recsAdded = null; 
-		//int count = 0;
 		while(scanner.hasNext())
 		{
-			recsAdded = scanner.nextLine();
-			//count += 1;
+			recsAdded = scanner.nextLine();			
 		}
 		scanner.close();		
 		return recsAdded;
-	}	
+	}
+	*/
+    public static Object[] readRec() throws IOException { 
+		Scanner scanner = new Scanner(cfile);	
+		
+		ArrayList<String> recsAdded = new ArrayList<String>(); // create an array list to add to using scanner	
+		while (scanner.hasNext())
+		{
+			String info = scanner.nextLine();
+			recsAdded.add(info);
+		}
+		scanner.close();			
+		return recsAdded.toArray();		
+	}
     //Tim above
 
     public static String displayData () { // I need to add an argument to call recorda according to program

@@ -166,7 +166,7 @@ public class MainGUI extends JFrame {
             
             // tim
             
-            addrecs += 1;
+            addrecs = 1;
             try {
 				StudentIO.saveRecord(addrecs);
 			} catch (IOException e1) {
@@ -309,19 +309,21 @@ public class MainGUI extends JFrame {
         	public void actionPerformed(ActionEvent e) 
         	{
         		//textArea.setText(String.valueOf(getAddrecs())); // checker
-        		String records = null;
+        		Object[] records = null;
         		int record = 0;
 				try {
-					 records = StudentIO.readRec();					
-					 textArea.setText(String.valueOf(records));
+					 records = StudentIO.readRec();	
+					 for(int i = 0; i < records.length; i++)
+					 {
+						 record += 1;
+					 }
+					 textArea.setText(String.valueOf(record)); // checker 
 					 
 				} catch (IOException e1) {					
 					e1.printStackTrace();
-				}  
-				
-				record = Integer.parseInt(records);				
+				} 		
         		setCounter(record);
-        		
+        	
         		try {
 					Student S = StudentIO.lastRecord(record);
 					textArea.setText("The Last Record" + "\n" +
@@ -334,6 +336,7 @@ public class MainGUI extends JFrame {
 				catch(IOException e1){					
 					JOptionPane.showMessageDialog(null, "Error ! " + e1.getMessage());
 				}
+				
 						
         	}
         });
