@@ -192,34 +192,25 @@ public class MainGUI extends JFrame {
         btnDisplay.addActionListener(e ->  { //This button is designed to DISPLAY selected Program from combobox
         	textArea.setText("");
         	
-            System.out.println("Button is working"); //Checker in Console
+        	String str = "Student ID" + "\t" + "Program" + "\t" + "Semester" + "\t" + "Courses" + "\n";
             
-            StringBuilder strBuild = new StringBuilder();
             if (StudentIO.arrayList.size() == 0) { //Checks ArrayList size
                 StudentIO.displayData(); //If array list size is 0 it will call this method to add elements.
                 
                 for (Student k: StudentIO.arrayList // ForEach to check each elements in array list
                 ) {
-                    System.out.println("It is in the foreach loop"); //Checker in Console
-                    
                     if (k.getProgram().equals(comboBox.getSelectedItem())) // Checks equality of selected item in ComboBox 
-                    	strBuild.append(k.getStudentId()).append(" ").append(k.getProgram()).append(" ").append(k.getSemester()).append(" ").append(k.getCourses()).append("\n");
+                    	str += k.getStudentId() + "\t" + k.getProgram() + "\t" + k.getSemester() + "\t" + k.getCourses() + "\n";
                 }
-                textArea.setText(strBuild.toString());
-                
-                strBuild.setLength(0);
+                textArea.setText(str);
                 
             } else { //if array list contains element this part will be executed
                 for (Student k: StudentIO.arrayList
                 ) {
-                    System.out.println("It is in the foreach loop");//Checker in Console
-                    
                     if (k.getProgram().equals(comboBox.getSelectedItem())) // Checks equality of selected item in ComboBox 
-                    	strBuild.append(k.getStudentId()).append(" ").append(k.getProgram()).append(" ").append(k.getSemester()).append(" ").append(k.getCourses()).append("\n");
+                    	str += k.getStudentId() + "\t" + k.getProgram() + "\t" + k.getSemester() + "\t" + k.getCourses() + "\n";
                 }
-                textArea.setText(strBuild.toString()); // adds content of StringBuilder in to the text area.
-                
-                strBuild.setLength(0); // Resets the StringBuilder
+                textArea.setText(str); // adds content of StringBuilder in to the text area.
             }
         
         });
