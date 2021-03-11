@@ -22,7 +22,8 @@ public class StudentIO {
     private static File cfile = new File("numRecs.txt");
     private static final int REC_SIZE = 42;  
     private static final int COURSE_SIZE = 14; 
-    public static ArrayList<Student> arrayList = new ArrayList<>(); //displayData and updateData will use this list
+    public static ArrayList<Student> arrayList = new ArrayList<>(); 
+    //displayData and updateData will use this list
     
     //This method is designed by *****CEZMI******
     //This method is designed to save data in the file
@@ -101,8 +102,11 @@ public class StudentIO {
         try(RandomAccessFile rdAOut = new RandomAccessFile(bfile,"rw"))
         {
             //set pointer at the beginning of the updated record
-            rdAOut.seek((long)record * REC_SIZE - REC_SIZE );
+            rdAOut.seek((long)record * REC_SIZE - REC_SIZE );            
 
+            // Need and if statement to check if record exists or not
+            // currently can update record even if its not created 
+          
             //Write data from Student class into the binary file
             rdAOut.writeInt(stdReg.getStudentId());
             rdAOut.writeChars((String)stdReg.getProgram());
@@ -166,28 +170,18 @@ public class StudentIO {
     }
 
     
-    //Tim Below 
+    //This method is designed by  **** TIM ****
+    // This method is designed to keep track of the # of records saved
     public static void saveRecord (int recInfo) throws IOException 
     {
     	try(PrintWriter writer = new PrintWriter(new FileWriter(cfile, true))) 
     	{						
 			writer.println(recInfo);	
     	}
-    }
+    }    
     
-    /*
-    public static String readRec() throws IOException { 
-    	//some issues here 
-		Scanner scanner = new Scanner(cfile);		
-		String recsAdded = null; 
-		while(scanner.hasNext())
-		{
-			recsAdded = scanner.nextLine();			
-		}
-		scanner.close();		
-		return recsAdded;
-	}
-	*/
+    //This method is designed by  **** TIM ****
+    // This method is designed read the number of records saved 
     public static Object[] readRec() throws IOException { 
 		Scanner scanner = new Scanner(cfile);	
 		
@@ -200,227 +194,173 @@ public class StudentIO {
 		scanner.close();			
 		return recsAdded.toArray();		
 	}
-    //Tim above
+    
 
     
     
-    //This method is designed by  **** TIMOTHY ****
+    //This method is designed by  **** TIM ****
+    // This method is designed to display the first record on file
     public static Student firstRecord (int recNum) throws IOException
     {        	 
-    	Student S = new Student();
-    	try(RandomAccessFile dIn = new RandomAccessFile(bfile,"r")) {
+    	Student student = new Student();
+    	try(RandomAccessFile raf = new RandomAccessFile(bfile,"r")) {
     		//Find number of records in a file
-			int numRecs = (int)dIn.length()/REC_SIZE;
+			int numRecs = (int)raf.length()/REC_SIZE;
 
 			if (numRecs >= recNum){
 				//Move the file pointer in the beginning of rec to read
-				dIn.seek((recNum-1) * REC_SIZE);
+				raf.seek((recNum-1) * REC_SIZE);
 				
 								
-				int Stud_ID = dIn.readInt(); // not reading all numbers 
+				int stud_ID = raf.readInt(); 
 				
-				/*
-				int Stud_ID = 0;
-				for (int i=0; i< STUD_ID_SIZE; i++) {
-					Stud_ID = dIn.readInt();
-				}
 				
-					
-				StringBuilder Stud = new StringBuilder();
-				for (int i=0; i<STUD_ID_SIZE; i++) {
-					char nameChar = dIn.readChar();
-					Stud.append(nameChar);				
-				}
-				
-				*/
-				StringBuilder Prog = new StringBuilder();
+				StringBuilder program = new StringBuilder();
 				for (int i=0; i<3; i++) {
-					char nameChar = dIn.readChar();
-					Prog.append(nameChar);				
+					char nameChar = raf.readChar();
+					program.append(nameChar);				
 				}
 				
-				int Sem = dIn.readInt();
+				int semester = raf.readInt();
 				
-				StringBuilder Courses = new StringBuilder();
+				StringBuilder courses = new StringBuilder();
 				for (int i=0; i<COURSE_SIZE; i++) {
-					char nameChar = dIn.readChar();
-					Courses.append(nameChar);				
+					char nameChar = raf.readChar();
+					courses.append(nameChar);				
 				}
 				
-				S.setStudentId(Stud_ID);
-				//S.setStudentId(Stud.toString());
-				S.setProgram(Prog.toString());
-				S.setSemester(Sem);
-				S.setCourses(Courses.toString());	
-				return S;
+				student.setStudentId(stud_ID);				
+				student.setProgram(program.toString());
+				student.setSemester(semester);
+				student.setCourses(courses.toString());	
+				return student;
 			}
 			else
 				throw new IOException("Invalid - No records found");				
 		}
     }
 
-    //This method is designed by  **** TIMOTHY ****
+    //This method is designed by  **** TIM ****
+    // This method is designed to display the previous record on file - if there is one
     public static Student previousRecord (int recNum)  throws IOException
     {    
-    	Student S = new Student();
-    	try(RandomAccessFile dIn = new RandomAccessFile(bfile,"r")) {
+    	Student student = new Student();
+    	try(RandomAccessFile raf = new RandomAccessFile(bfile,"r")) {
     		//Find number of records in a file
-			int numRecs = (int)dIn.length()/REC_SIZE;
+			int numRecs = (int)raf.length()/REC_SIZE;
 
 			if (numRecs >= recNum){
 				//Move the file pointer in the beginning of rec to read
-				dIn.seek((recNum-1) * REC_SIZE);
+				raf.seek((recNum-1) * REC_SIZE);
 				
 								
-				int Stud_ID = dIn.readInt(); // not reading all numbers 
+				int stud_ID = raf.readInt(); // not reading all numbers 
 				
-				/*				
-				int Stud_ID = 0;
-				for (int i=0; i< STUD_ID_SIZE; i++) {
-					Stud_ID = dIn.readInt();
-				}
-					
-				StringBuilder Stud = new StringBuilder();
-				for (int i=0; i<STUD_ID_SIZE; i++) {
-					char nameChar = dIn.readChar();
-					Stud.append(nameChar);				
-				}
-				*/
-				
-				StringBuilder Prog = new StringBuilder();
+								
+				StringBuilder program = new StringBuilder();
 				for (int i=0; i<3; i++) {
-					char nameChar = dIn.readChar();
-					Prog.append(nameChar);				
+					char nameChar = raf.readChar();
+					program.append(nameChar);				
 				}
 				
-				int Sem = dIn.readInt();
+				int semester = raf.readInt();
 				
-				StringBuilder Courses = new StringBuilder();
+				StringBuilder courses = new StringBuilder();
 				for (int i=0; i<COURSE_SIZE; i++) {
-					char nameChar = dIn.readChar();
-					Courses.append(nameChar);				
+					char nameChar = raf.readChar();
+					courses.append(nameChar);				
 				}
 				
-				S.setStudentId(Stud_ID);
-				//S.setStudentId(Stud.toString());
-				S.setProgram(Prog.toString());
-				S.setSemester(Sem);
-				S.setCourses(Courses.toString());	
-				return S;
+				student.setStudentId(stud_ID);				
+				student.setProgram(program.toString());
+				student.setSemester(semester);
+				student.setCourses(courses.toString());	
+				return student;
 			}
 			else
 				throw new IOException("Invalid - No records found");				
 		}
     }
 
-    //This method is designed by  **** TIMOTHY ****
+    //This method is designed by  **** TIM ****
+    // This method is designed to display the next record on file - if there is one
     public static Student nextRecord (int recNum) throws IOException
     {    
-    	Student S = new Student();
-    	try(RandomAccessFile dIn = new RandomAccessFile(bfile,"r")) {
+    	Student student = new Student();
+    	try(RandomAccessFile raf = new RandomAccessFile(bfile,"r")) {
     		//Find number of records in a file
-			int numRecs = (int)dIn.length()/REC_SIZE;
+			int numRecs = (int)raf.length()/REC_SIZE;
 
 			if (numRecs >= recNum){
 				//Move the file pointer in the beginning of rec to read
-				dIn.seek((recNum-1) * REC_SIZE);
+				raf.seek((recNum-1) * REC_SIZE);
 				
 								
-				int Stud_ID = dIn.readInt(); // not reading all numbers 
-				/*
+				int stud_ID = raf.readInt(); // not reading all numbers 
 								
-				int Stud_ID = 0;
-				for (int i=0; i< STUD_ID_SIZE; i++) {
-					Stud_ID = dIn.readInt();
-				}
-					
-				StringBuilder Stud = new StringBuilder();
-				for (int i=0; i<STUD_ID_SIZE; i++) {
-					char nameChar = dIn.readChar();
-					Stud.append(nameChar);				
-				}
-				*/
-				
-				StringBuilder Prog = new StringBuilder();
+				StringBuilder program = new StringBuilder();
 				for (int i=0; i<3; i++) {
-					char nameChar = dIn.readChar();
-					Prog.append(nameChar);				
+					char nameChar = raf.readChar();
+					program.append(nameChar);				
 				}
 				
-				int Sem = dIn.readInt();
+				int semester = raf.readInt();
 				
-				StringBuilder Courses = new StringBuilder();
+				StringBuilder courses = new StringBuilder();
 				for (int i=0; i<COURSE_SIZE; i++) {
-					char nameChar = dIn.readChar();
-					Courses.append(nameChar);				
+					char nameChar = raf.readChar();
+					courses.append(nameChar);				
 				}
 				
-				S.setStudentId(Stud_ID);
-				//S.setStudentId(Stud.toString());
-				S.setProgram(Prog.toString());
-				S.setSemester(Sem);
-				S.setCourses(Courses.toString());	
-				return S;
+				student.setStudentId(stud_ID);				
+				student.setProgram(program.toString());
+				student.setSemester(semester);
+				student.setCourses(courses.toString());	
+				return student;
 			}
 			else
 				throw new IOException("Invalid - No records found");				
 		}
     }
 
-    //This method is designed by  **** TIMOTHY ****
+    //This method is designed by  **** TIM ****
+    // This method is designed to display the last record on file
     public static Student lastRecord (int recNum) throws IOException
     {    
-    	Student S = new Student();
-    	try(RandomAccessFile dIn = new RandomAccessFile(bfile,"r")) {
+    	Student student = new Student();
+    	try(RandomAccessFile raf = new RandomAccessFile(bfile,"r")) {
     		//Find number of records in a file
-			int numRecs = (int)dIn.length()/REC_SIZE;
+			int numRecs = (int)raf.length()/REC_SIZE;
 
 			if (numRecs >= recNum){
 				//Move the file pointer in the beginning of rec to read
-				dIn.seek((recNum-1) * REC_SIZE);
+				raf.seek((recNum-1) * REC_SIZE);
 				
 								
-				int Stud_ID = dIn.readInt(); // not reading all numbers 
-				/*
-								
-				int Stud_ID = 0;
-				for (int i=0; i< STUD_ID_SIZE; i++) {
-					Stud_ID = dIn.readInt();
-				}
+				int stud_ID = raf.readInt(); // not reading all numbers 							
 				
-				
-				StringBuilder Stud = new StringBuilder();
-				for (int i=0; i<STUD_ID_SIZE; i++) {
-					char nameChar = dIn.readChar();
-					Stud.append(nameChar);				
-				}
-				*/
-				
-				
-				StringBuilder Prog = new StringBuilder();
+				StringBuilder program = new StringBuilder();
 				for (int i=0; i<3; i++) {
-					char nameChar = dIn.readChar();
-					Prog.append(nameChar);				
+					char nameChar = raf.readChar();
+					program.append(nameChar);				
 				}
 				
-				int Sem = dIn.readInt();
+				int semester = raf.readInt();
 				
-				StringBuilder Courses = new StringBuilder();
+				StringBuilder courses = new StringBuilder();
 				for (int i=0; i<COURSE_SIZE; i++) {
-					char nameChar = dIn.readChar();
-					Courses.append(nameChar);				
+					char nameChar = raf.readChar();
+					courses.append(nameChar);				
 				}
 				
-				S.setStudentId(Stud_ID);
-				//S.setStudentId(Stud.toString());
-				S.setProgram(Prog.toString());
-				S.setSemester(Sem);
-				S.setCourses(Courses.toString());	
-				return S;
+				student.setStudentId(stud_ID);
+				student.setProgram(program.toString());
+				student.setSemester(semester);
+				student.setCourses(courses.toString());	
+				return student;
 			}
 			else
 				throw new IOException("Invalid - No records found");				
 		}
     }
-
 }

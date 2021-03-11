@@ -175,11 +175,14 @@ public class MainGUI extends JFrame {
             
             // Cezmi - I did not understand purpose of this code????
             
-            // Tim  - keeps track of records added for quick reference           
-			/*
-			 * addrecs = 1; try { StudentIO.saveRecord(addrecs); } catch (IOException e1) {
-			 * // TODO Auto-generated catch block e1.printStackTrace(); }
-			 */
+            // Tim  - keeps track of records added for quick reference  
+			 addrecs = 1; 
+			 try { StudentIO.saveRecord(addrecs); } 
+			 catch (IOException e1)
+			 {
+			   e1.printStackTrace(); 
+			 }
+			 
             // Tim 
 
         });
