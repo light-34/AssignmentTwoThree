@@ -90,8 +90,6 @@ public class MainGUI extends JFrame {
 
         txtStudentId = new JTextField();
         txtStudentId.setFont(new Font("Tahoma", Font.BOLD, 12));
-        txtStudentId.setText("Will Be Automatically Assigned!");
-        txtStudentId.setEditable(false); // made not editable for id is pre set 
         txtStudentId.setBounds(125, 14, 228, 24);
         contentPane.add(txtStudentId);
         txtStudentId.setColumns(10);
