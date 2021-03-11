@@ -32,7 +32,6 @@ public class MainGUI extends JFrame {
     private JTextArea textArea;
     private final ButtonGroup buttonGroup = new ButtonGroup();
     private Business.Student student;
-    // tim vars below
     private int counter = 0;
     private int addrecs = 0;
 
@@ -226,7 +225,8 @@ public class MainGUI extends JFrame {
 
         
         JButton btnExit = new JButton("Exit");
-        btnExit.addActionListener(e -> { //Button designed to EXIT from app
+        btnExit.addActionListener(e -> 
+        { //Button designed to EXIT from app
             System.exit(0);
         });
         btnExit.setForeground(Color.RED);
@@ -244,19 +244,17 @@ public class MainGUI extends JFrame {
         	public void actionPerformed(ActionEvent e) 
         	{
         		setCounter(1);
-        		int record=1;        		
-				
+        		int record=1; 
 				try {
 					Student student = StudentIO.firstRecord(record);
 					textArea.setText("The First Record" + "\n" +
 					"Student ID: " + String.valueOf(student.getStudentId()) + "\n" + 
 					"Program Name: " + String.valueOf(student.getProgram()) + "\n" + 
 					"Semester: " + String.valueOf(student.getSemester()) + "\n"  +
-					"Course List: " + student.getCourses());				
-					
+					"Course List: " + student.getCourses());	
 				}
 				catch(IOException e1){					
-					JOptionPane.showMessageDialog(null, "Error ! " + e1.getMessage());
+					JOptionPane.showMessageDialog(null, "Error! \n" + e1.getMessage());
 				}		
         	}
         });
@@ -272,25 +270,21 @@ public class MainGUI extends JFrame {
         		int record = getCounter();  
         		record -= 1;
         		setCounter(record);
-        		
-        		//textArea.setText(String.valueOf(record));
-        		if (record >= 1) {
-        			textArea.setText(String.valueOf(record));        			
-        			try {
-        			
-        			Student student = StudentIO.previousRecord(record);
-					textArea.setText("The Previous Record" + "\n" +
-					"Student ID: " + String.valueOf(student.getStudentId()) + "\n" + 
-					"Program Name: " + String.valueOf(student.getProgram()) + "\n" + 
-					"Semester: " + String.valueOf(student.getSemester()) + "\n"  +
-					"Course List: " + student.getCourses());
-									
-					
+        		if (record >= 1) 
+        		{        			        			
+        			try 
+        			{
+	        			Student student = StudentIO.previousRecord(record);
+						textArea.setText("The Previous Record" + "\n" +
+						"Student ID: " + String.valueOf(student.getStudentId()) + "\n" + 
+						"Program Name: " + String.valueOf(student.getProgram()) + "\n" + 
+						"Semester: " + String.valueOf(student.getSemester()) + "\n"  +
+						"Course List: " + student.getCourses());
         			}
-					catch(IOException e1){					
-						JOptionPane.showMessageDialog(null, "Error! " + e1.getMessage());						
+					catch(IOException e1)
+        			{					
+						JOptionPane.showMessageDialog(null, "Error! \n" + e1.getMessage());						
 					}
-					
         		}
         		else
         		{
@@ -298,8 +292,6 @@ public class MainGUI extends JFrame {
         			record += 1;
         			setCounter(record);
         		}
-        		
-				
         	}
         });
         btnPrevious.setForeground(new Color(0, 153, 0));
@@ -313,8 +305,7 @@ public class MainGUI extends JFrame {
         	{
         		int record = getCounter();        		
         		record += 1;
-        		setCounter(record);        		
-        		
+        		setCounter(record);   
         		if (record >= 1) {        			        			
         			try 
         			{
@@ -331,7 +322,6 @@ public class MainGUI extends JFrame {
 						record -= 1;
 		        		setCounter(record);						
 					}
-					
         		}        		
         	}
         });
@@ -347,33 +337,32 @@ public class MainGUI extends JFrame {
         	{        		
         		Object[] records = null;
         		int record = 0;
-				try {
+				try 
+				{
 					 records = StudentIO.readRec();	
 					 for(int i = 0; i < records.length; i++)
 					 {
 						 record += 1;
 					 }
-					 textArea.setText(String.valueOf(record)); // checker 
-					 
-				} catch (IOException e1) {					
+				} 
+				catch (IOException e1) 
+				{					
 					e1.printStackTrace();
 				} 		
         		setCounter(record);
-        	
-        		try {
+        		try 
+        		{
 					Student student = StudentIO.lastRecord(record);
 					textArea.setText("The Last Record" + "\n" +
 					"Student ID: " + String.valueOf(student.getStudentId()) + "\n" + 
 					"Program Name: " + String.valueOf(student.getProgram()) + "\n" + 
 					"Semester: " + String.valueOf(student.getSemester()) + "\n"  +
-					"Course List: " + student.getCourses());				
-					
+					"Course List: " + student.getCourses());	
 				}
-				catch(IOException e1){					
-					JOptionPane.showMessageDialog(null, "Error ! " + e1.getMessage());
+				catch(IOException e1)
+        		{					
+					JOptionPane.showMessageDialog(null, "Error! \n" + e1.getMessage());
 				}
-				
-						
         	}
         });
         btnLast.setForeground(new Color(0, 153, 0));
@@ -390,14 +379,14 @@ public class MainGUI extends JFrame {
         	//Tim 
             if(txtStudentId.getText().equals(""))
                 JOptionPane.showMessageDialog(null,"Student ID can not be empty");
-            // need and xtra else if for file not existing 
+            // need and extra if for file not existing 
             // Added by Tim - check if record exists            
             if (comparer != studComp.getStudentId() )
             {
             	JOptionPane.showMessageDialog(null,"Student ID does not exist");
             }
-            
-            else {
+            else 
+            {
                 StringBuilder stringBuilder = new StringBuilder();
                 int selSemester = 0;
 
@@ -431,12 +420,6 @@ public class MainGUI extends JFrame {
         textArea.setBounds(10, 220, 454, 319);
         contentPane.add(textArea);
     }
-
-	private void setaddrec() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public int getCounter() {
 		return counter;
 	}
