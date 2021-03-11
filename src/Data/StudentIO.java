@@ -101,10 +101,10 @@ public class StudentIO {
         try(RandomAccessFile rdAOut = new RandomAccessFile(bfile,"rw"))
         {
             //set pointer at the beginning of the updated record
-            rdAOut.seek(record * REC_SIZE - REC_SIZE );
+            rdAOut.seek((long)record * REC_SIZE - REC_SIZE );
 
             //Write data from Student class into the binary file
-            rdAOut.writeInt(record);
+            rdAOut.writeInt(stdReg.getStudentId());
             rdAOut.writeChars((String)stdReg.getProgram());
             rdAOut.writeInt(stdReg.getSemester());
 

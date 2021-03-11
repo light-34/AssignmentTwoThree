@@ -408,9 +408,10 @@ public class MainGUI extends JFrame {
                 if(chckbxC5.isSelected()) stringBuilder.append("C5");
                 System.out.println(stringBuilder.toString());
 
-                student = new Student(StudentIO.idFinder(), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
+                student = new Student(Integer.parseInt(txtStudentId.getText()), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
 
                 StudentIO.updateRecord(student, Integer.parseInt(txtStudentId.getText()));
+                JOptionPane.showMessageDialog(null,"Student ID : " + txtStudentId.getText() + "\nhas been updated successfully");
             }
         });
         btnUpdate.setToolTipText("Update Current Record");
