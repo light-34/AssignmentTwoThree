@@ -104,9 +104,6 @@ public class StudentIO {
             //set pointer at the beginning of the updated record
             rdAOut.seek((long)record * REC_SIZE - REC_SIZE );            
 
-            // Need and if statement to check if record exists or not
-            // currently can update record even if its not created 
-          
             //Write data from Student class into the binary file
             rdAOut.writeInt(stdReg.getStudentId());
             rdAOut.writeChars((String)stdReg.getProgram());
@@ -174,8 +171,8 @@ public class StudentIO {
     // This method is designed to keep track of the # of records saved
     public static void saveRecord (int recInfo) throws IOException 
     {
-    	try(PrintWriter writer = new PrintWriter(new FileWriter(cfile, true))) 
-    	{						
+    	try(PrintWriter writer = new PrintWriter(new FileWriter(cfile, true)))  
+    	{	// writer to write to text file					
 			writer.println(recInfo);	
     	}
     }    
@@ -184,51 +181,59 @@ public class StudentIO {
     // This method is designed read the number of records saved 
     public static Object[] readRec() throws IOException { 
 		Scanner scanner = new Scanner(cfile);	
-		
-		ArrayList<String> recsAdded = new ArrayList<String>(); // create an array list to add to using scanner	
+		// create scanner to read from file 		
+		ArrayList<String> recsAdded = new ArrayList<String>(); 
+		// create an array list to add to using scanner	
 		while (scanner.hasNext())
-		{
+		{// scan and add to array list 
 			String info = scanner.nextLine();
 			recsAdded.add(info);
 		}
+		//close scanner and return array 
 		scanner.close();			
 		return recsAdded.toArray();		
 	}
-    
-
-    
     
     //This method is designed by  **** TIM ****
     // This method is designed to display the first record on file
     public static Student firstRecord (int recNum) throws IOException
     {        	 
     	Student student = new Student();
-    	try(RandomAccessFile raf = new RandomAccessFile(bfile,"r")) {
+    	// create student object
+    	try(RandomAccessFile raf = new RandomAccessFile(bfile,"r"))// random access object  
+    	{
     		//Find number of records in a file
 			int numRecs = (int)raf.length()/REC_SIZE;
 
 			if (numRecs >= recNum){
-				//Move the file pointer in the beginning of rec to read
+				//Move the file pointer in the beginning of record to read
 				raf.seek((recNum-1) * REC_SIZE);
 				
 								
-				int stud_ID = raf.readInt(); 
+				int stud_ID = raf.readInt();
+				// create int for student id - read int 
 				
 				
 				StringBuilder program = new StringBuilder();
-				for (int i=0; i<3; i++) {
+				for (int i=0; i<3; i++) 
+				{
 					char nameChar = raf.readChar();
 					program.append(nameChar);				
 				}
+				// create string for program - read char 
 				
 				int semester = raf.readInt();
+				// create int for semester - read int 
 				
 				StringBuilder courses = new StringBuilder();
-				for (int i=0; i<COURSE_SIZE; i++) {
+				for (int i=0; i<COURSE_SIZE; i++) 
+				{
 					char nameChar = raf.readChar();
 					courses.append(nameChar);				
 				}
+				// create string for courses - read char
 				
+				// add var to student object - return student object 
 				student.setStudentId(stud_ID);				
 				student.setProgram(program.toString());
 				student.setSemester(semester);
@@ -245,32 +250,41 @@ public class StudentIO {
     public static Student previousRecord (int recNum)  throws IOException
     {    
     	Student student = new Student();
-    	try(RandomAccessFile raf = new RandomAccessFile(bfile,"r")) {
+    	// create student object
+    	try(RandomAccessFile raf = new RandomAccessFile(bfile,"r"))// random access object  
+    	{
     		//Find number of records in a file
 			int numRecs = (int)raf.length()/REC_SIZE;
 
 			if (numRecs >= recNum){
-				//Move the file pointer in the beginning of rec to read
+				//Move the file pointer in the beginning of record to read
 				raf.seek((recNum-1) * REC_SIZE);
 				
 								
-				int stud_ID = raf.readInt(); // not reading all numbers 
+				int stud_ID = raf.readInt();
+				// create int for student id - read int 
 				
-								
+				
 				StringBuilder program = new StringBuilder();
-				for (int i=0; i<3; i++) {
+				for (int i=0; i<3; i++) 
+				{
 					char nameChar = raf.readChar();
 					program.append(nameChar);				
 				}
+				// create string for program - read char 
 				
 				int semester = raf.readInt();
+				// create int for semester - read int 
 				
 				StringBuilder courses = new StringBuilder();
-				for (int i=0; i<COURSE_SIZE; i++) {
+				for (int i=0; i<COURSE_SIZE; i++) 
+				{
 					char nameChar = raf.readChar();
 					courses.append(nameChar);				
 				}
+				// create string for courses - read char
 				
+				// add var to student object - return student object 
 				student.setStudentId(stud_ID);				
 				student.setProgram(program.toString());
 				student.setSemester(semester);
@@ -287,31 +301,41 @@ public class StudentIO {
     public static Student nextRecord (int recNum) throws IOException
     {    
     	Student student = new Student();
-    	try(RandomAccessFile raf = new RandomAccessFile(bfile,"r")) {
+    	// create student object
+    	try(RandomAccessFile raf = new RandomAccessFile(bfile,"r"))// random access object  
+    	{
     		//Find number of records in a file
 			int numRecs = (int)raf.length()/REC_SIZE;
 
 			if (numRecs >= recNum){
-				//Move the file pointer in the beginning of rec to read
+				//Move the file pointer in the beginning of record to read
 				raf.seek((recNum-1) * REC_SIZE);
 				
 								
-				int stud_ID = raf.readInt(); // not reading all numbers 
-								
+				int stud_ID = raf.readInt();
+				// create int for student id - read int 
+				
+				
 				StringBuilder program = new StringBuilder();
-				for (int i=0; i<3; i++) {
+				for (int i=0; i<3; i++) 
+				{
 					char nameChar = raf.readChar();
 					program.append(nameChar);				
 				}
+				// create string for program - read char 
 				
 				int semester = raf.readInt();
+				// create int for semester - read int 
 				
 				StringBuilder courses = new StringBuilder();
-				for (int i=0; i<COURSE_SIZE; i++) {
+				for (int i=0; i<COURSE_SIZE; i++) 
+				{
 					char nameChar = raf.readChar();
 					courses.append(nameChar);				
 				}
+				// create string for courses - read char
 				
+				// add var to student object - return student object 
 				student.setStudentId(stud_ID);				
 				student.setProgram(program.toString());
 				student.setSemester(semester);
@@ -328,32 +352,42 @@ public class StudentIO {
     public static Student lastRecord (int recNum) throws IOException
     {    
     	Student student = new Student();
-    	try(RandomAccessFile raf = new RandomAccessFile(bfile,"r")) {
+    	// create student object
+    	try(RandomAccessFile raf = new RandomAccessFile(bfile,"r"))// random access object  
+    	{
     		//Find number of records in a file
 			int numRecs = (int)raf.length()/REC_SIZE;
 
 			if (numRecs >= recNum){
-				//Move the file pointer in the beginning of rec to read
+				//Move the file pointer in the beginning of record to read
 				raf.seek((recNum-1) * REC_SIZE);
 				
 								
-				int stud_ID = raf.readInt(); // not reading all numbers 							
+				int stud_ID = raf.readInt();
+				// create int for student id - read int 
+				
 				
 				StringBuilder program = new StringBuilder();
-				for (int i=0; i<3; i++) {
+				for (int i=0; i<3; i++) 
+				{
 					char nameChar = raf.readChar();
 					program.append(nameChar);				
 				}
+				// create string for program - read char 
 				
 				int semester = raf.readInt();
+				// create int for semester - read int 
 				
 				StringBuilder courses = new StringBuilder();
-				for (int i=0; i<COURSE_SIZE; i++) {
+				for (int i=0; i<COURSE_SIZE; i++) 
+				{
 					char nameChar = raf.readChar();
 					courses.append(nameChar);				
 				}
+				// create string for courses - read char
 				
-				student.setStudentId(stud_ID);
+				// add var to student object - return student object 
+				student.setStudentId(stud_ID);				
 				student.setProgram(program.toString());
 				student.setSemester(semester);
 				student.setCourses(courses.toString());	
