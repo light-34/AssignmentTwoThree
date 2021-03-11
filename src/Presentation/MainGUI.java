@@ -165,7 +165,7 @@ public class MainGUI extends JFrame {
             //This line will load data to Student class
             student = new Student(StudentIO.idFinder(), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
             
-           
+            // message to confirm data that is saved - Tim 
             JOptionPane.showMessageDialog(null,"Student ID: " + StudentIO.idFinder() + "\n" + 
             "Program: " + comboBox.getSelectedItem() + "\n" +
             "Semester: " + selSemester + "\n"+ 
@@ -175,14 +175,16 @@ public class MainGUI extends JFrame {
             
             // Cezmi - I did not understand purpose of this code????
             
-            // Tim  - keeps track of records added for quick reference  
-			 addrecs = 1; 
-			 try { StudentIO.saveRecord(addrecs); } 
-			 catch (IOException e1)
-			 {
-			   e1.printStackTrace(); 
-			 }
-			 
+            // Tim  - keeps track of records added for quick reference (in last - next and prv)  
+			addrecs = 1;			
+			try 
+			{
+				StudentIO.saveRecord(addrecs);
+			} 
+			catch (IOException e1) 
+			{				
+				e1.printStackTrace();
+			}	
             // Tim 
 
         });
@@ -245,12 +247,12 @@ public class MainGUI extends JFrame {
         		int record=1;        		
 				
 				try {
-					Student S = StudentIO.firstRecord(record);
+					Student student = StudentIO.firstRecord(record);
 					textArea.setText("The First Record" + "\n" +
-					"Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
-					"Program Name: " + String.valueOf(S.getProgram()) + "\n" + 
-					"Semester: " + String.valueOf(S.getSemester()) + "\n"  +
-					"Course List: " + S.getCourses());				
+					"Student ID: " + String.valueOf(student.getStudentId()) + "\n" + 
+					"Program Name: " + String.valueOf(student.getProgram()) + "\n" + 
+					"Semester: " + String.valueOf(student.getSemester()) + "\n"  +
+					"Course List: " + student.getCourses());				
 					
 				}
 				catch(IOException e1){					
@@ -276,12 +278,12 @@ public class MainGUI extends JFrame {
         			textArea.setText(String.valueOf(record));        			
         			try {
         			
-        			Student S = StudentIO.previousRecord(record);
+        			Student student = StudentIO.previousRecord(record);
 					textArea.setText("The Previous Record" + "\n" +
-					"Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
-					"Program Name: " + String.valueOf(S.getProgram()) + "\n" + 
-					"Semester: " + String.valueOf(S.getSemester()) + "\n"  +
-					"Course List: " + S.getCourses());
+					"Student ID: " + String.valueOf(student.getStudentId()) + "\n" + 
+					"Program Name: " + String.valueOf(student.getProgram()) + "\n" + 
+					"Semester: " + String.valueOf(student.getSemester()) + "\n"  +
+					"Course List: " + student.getCourses());
 									
 					
         			}
@@ -316,12 +318,12 @@ public class MainGUI extends JFrame {
         		if (record >= 1) {        			        			
         			try 
         			{
-	        			Student S = StudentIO.nextRecord(record);
+	        			Student student = StudentIO.nextRecord(record);
 						textArea.setText("The Next Record" + "\n" +
-						"Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
-						"Program Name: " + String.valueOf(S.getProgram()) + "\n" + 
-						"Semester: " + String.valueOf(S.getSemester()) + "\n"  +
-						"Course List: " + S.getCourses());
+						"Student ID: " + String.valueOf(student.getStudentId()) + "\n" + 
+						"Program Name: " + String.valueOf(student.getProgram()) + "\n" + 
+						"Semester: " + String.valueOf(student.getSemester()) + "\n"  +
+						"Course List: " + student.getCourses());
         			}
 					catch(IOException e1){					
 						JOptionPane.showMessageDialog(null, "Error! There are no more records \n" 
@@ -342,8 +344,7 @@ public class MainGUI extends JFrame {
         btnLast.setToolTipText("Returns Most Rececnt Record");
         btnLast.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) 
-        	{
-        		//textArea.setText(String.valueOf(getAddrecs())); // checker
+        	{        		
         		Object[] records = null;
         		int record = 0;
 				try {
@@ -360,12 +361,12 @@ public class MainGUI extends JFrame {
         		setCounter(record);
         	
         		try {
-					Student S = StudentIO.lastRecord(record);
+					Student student = StudentIO.lastRecord(record);
 					textArea.setText("The Last Record" + "\n" +
-					"Student ID: " + String.valueOf(S.getStudentId()) + "\n" + 
-					"Program Name: " + String.valueOf(S.getProgram()) + "\n" + 
-					"Semester: " + String.valueOf(S.getSemester()) + "\n"  +
-					"Course List: " + S.getCourses());				
+					"Student ID: " + String.valueOf(student.getStudentId()) + "\n" + 
+					"Program Name: " + String.valueOf(student.getProgram()) + "\n" + 
+					"Semester: " + String.valueOf(student.getSemester()) + "\n"  +
+					"Course List: " + student.getCourses());				
 					
 				}
 				catch(IOException e1){					
@@ -382,8 +383,20 @@ public class MainGUI extends JFrame {
 
         JButton btnUpdate = new JButton("Update");
         btnUpdate.addActionListener(e -> {
+        	// Tim 
+        	int comparer = 0;
+        	comparer = Integer.parseInt(txtStudentId.getText());
+        	Student studComp = new Student();
+        	//Tim 
             if(txtStudentId.getText().equals(""))
                 JOptionPane.showMessageDialog(null,"Student ID can not be empty");
+            // need and xtra else if for file not existing 
+            // Added by Tim - check if record exists            
+            if (comparer != studComp.getStudentId() )
+            {
+            	JOptionPane.showMessageDialog(null,"Student ID does not exist");
+            }
+            
             else {
                 StringBuilder stringBuilder = new StringBuilder();
                 int selSemester = 0;
