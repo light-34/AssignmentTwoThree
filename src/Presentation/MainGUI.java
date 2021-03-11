@@ -195,8 +195,9 @@ public class MainGUI extends JFrame {
         contentPane.add(btnSave);
 
         JButton btnDisplay = new JButton("Display");
-        btnDisplay.addActionListener(e ->  {textArea.setText("");
-        System.out.println("Button is working");
+        btnDisplay.addActionListener(e ->  { //This button is designed to DISPLAY all data
+        textArea.setText("");
+        System.out.println("Button is working");// Checker
         StringBuilder list = new StringBuilder();
         StudentIO.displayData();
         for (Student k: StudentIO.arrayList
@@ -211,8 +212,9 @@ public class MainGUI extends JFrame {
         btnDisplay.setBounds(384, 94, 80, 24);
         contentPane.add(btnDisplay);
 
+        
         JButton btnExit = new JButton("Exit");
-        btnExit.addActionListener(e -> {
+        btnExit.addActionListener(e -> { //Button designed to EXIT from app
             System.exit(0);
         });
         btnExit.setForeground(Color.RED);
