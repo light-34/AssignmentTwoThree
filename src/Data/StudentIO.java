@@ -22,7 +22,7 @@ public class StudentIO {
     private static File cfile = new File("numRecs.txt");
     private static final int REC_SIZE = 42;  
     private static final int COURSE_SIZE = 14; 
-    public static ArrayList<Student> arrayList = new ArrayList<>();
+    public static ArrayList<Student> arrayList = new ArrayList<>(); //displayData and updateData will use this list
     
     //This method is designed by *****CEZMI******
     //This method is designed to save data in the file
@@ -30,7 +30,7 @@ public class StudentIO {
     	try(DataOutputStream rdAOut = new DataOutputStream((new FileOutputStream(bfile,true)))) {
 
             //Write data from Student class into the binary file
-            rdAOut.writeInt(stdReg.getStudentId());
+            rdAOut.writeInt(stdReg.getStudentId()); 
             rdAOut.writeChars((String)stdReg.getProgram());
             rdAOut.writeInt(stdReg.getSemester());
 
@@ -41,6 +41,9 @@ public class StudentIO {
                 stdReg.setCourses(crsStrBuild.toString());
             }
             rdAOut.writeChars(stdReg.getCourses());
+            
+          //This will renew data in the array list
+          arrayList.clear();
 
         } catch (EOFException ex) {
             System.out.println("End of the file");
@@ -91,6 +94,40 @@ public class StudentIO {
             System.out.println("Error! File is not found");
         }
     }
+    
+    //This method is used to update the data 
+    //This method is designed by *****CEZMI******
+    public static void updateRecord (Student stdReg, int record) { 
+        try(RandomAccessFile rdAOut = new RandomAccessFile(bfile,"rw"))
+        {
+            //set pointer at the beginning of the updated record
+            rdAOut.seek(record * REC_SIZE - REC_SIZE );
+
+            //Write data from Student class into the binary file
+            rdAOut.writeInt(record);
+            rdAOut.writeChars((String)stdReg.getProgram());
+            rdAOut.writeInt(stdReg.getSemester());
+
+            if (stdReg.getCourses().length() < COURSE_SIZE) {
+                StringBuilder crsStrBuild = new StringBuilder(stdReg.getCourses());
+                int numChars = COURSE_SIZE - stdReg.getCourses().length();
+                crsStrBuild.append("\0".repeat(Math.max(0, numChars)));
+                stdReg.setCourses(crsStrBuild.toString());
+            }
+            
+            rdAOut.writeChars(stdReg.getCourses());
+            
+            //Clears Array List
+            arrayList.clear();
+            
+        } catch (EOFException ex) {
+            System.out.println("End of the file");
+        } catch (IOException ex) {
+            System.out.println("Error! File is not found");
+        }
+
+    }
+    
     
     //This method is designed by  **** CEZMI ****
     //This method is designed to load data into combobox from a text file
@@ -384,34 +421,6 @@ public class StudentIO {
 			else
 				throw new IOException("Invalid - No records found");				
 		}
-    }
-
-    public static void updateRecord (Student recUp) throws IOException
-    {   
-    	/*
-    	 * Logic
-    	 * if records contains id can not re add
-    	 * if records contain id then can update
-    	 * 		update where this.id matched record id
-    	 * 		use save below
-    	 */
-    	
-    	
-    		try(RandomAccessFile rdAOut = new RandomAccessFile(bfile,"rw")) 
-    		{    
-	            //set pointer at the end of the file
-	            rdAOut.seek(rdAOut.length());
-	
-	            //Write data from Student class into the binary file
-	           // rdAOut.writeInt(recUp.getStudentId());
-	            rdAOut.writeChars((String)recUp.getProgram());
-	            rdAOut.writeInt(recUp.getSemester());
-	            rdAOut.writeChars(recUp.getCourses());
-    		} 
-    		catch (IOException ex) 
-    		{
-    			System.out.println("Error! File is not found");
-    		}  
     }
 
 }

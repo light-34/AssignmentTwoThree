@@ -142,32 +142,30 @@ public class MainGUI extends JFrame {
         JButton btnSave = new JButton("Save");
         btnSave.addActionListener(e -> {
         	
-        	//added person id 
-        	//String Stud_ID = txtStudentId.getText();
-        	
             StringBuilder stringBuilder = new StringBuilder();
             int selSemester = 0;
-
+            
+            //To add semester
             if (rdOne.isSelected()) selSemester = 1;
             if (rdTwo.isSelected()) selSemester = 2;
             if (rdThree.isSelected()) selSemester = 3;
             if (rdFour.isSelected()) selSemester = 4;
 
-            System.out.println(selSemester);
+            System.out.println(selSemester); //Checker in Console
 
+            //To add Classes to StringBuilder
             if(chckbxC1.isSelected()) stringBuilder.append("C1 ");
             if(chckbxC2.isSelected()) stringBuilder.append("C2 ");
             if(chckbxC3.isSelected()) stringBuilder.append("C3 ");
             if(chckbxC4.isSelected()) stringBuilder.append("C4 ");
             if(chckbxC5.isSelected()) stringBuilder.append("C5");
-            System.out.println(stringBuilder.toString());
+            
+            System.out.println(stringBuilder.toString()); //Checker in Console
 
-            // issues here because I changed stud id to string type not int - Tim 
+            //This line will load data to Student class
             student = new Student(StudentIO.idFinder(), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
             
-            //student = new Student(Stud_ID, comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
-            //Stud_ID as string above - Tim
-            
+           
             JOptionPane.showMessageDialog(null,"Student ID: " + StudentIO.idFinder() + "\n" + 
             "Program: " + comboBox.getSelectedItem() + "\n" +
             "Semester: " + selSemester + "\n"+ 
@@ -175,15 +173,13 @@ public class MainGUI extends JFrame {
             
             StudentIO.saveData(student);
             
+            // Cezmi - I did not understand purpose of this code????
             
             // Tim  - keeps track of records added for quick reference           
-            addrecs = 1;
-            try {
-				StudentIO.saveRecord(addrecs);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			/*
+			 * addrecs = 1; try { StudentIO.saveRecord(addrecs); } catch (IOException e1) {
+			 * // TODO Auto-generated catch block e1.printStackTrace(); }
+			 */
             // Tim 
 
         });
@@ -193,17 +189,39 @@ public class MainGUI extends JFrame {
         contentPane.add(btnSave);
 
         JButton btnDisplay = new JButton("Display");
-        btnDisplay.addActionListener(e ->  { //This button is designed to DISPLAY all data
-        textArea.setText("");
-        System.out.println("Button is working");// Checker
-        StringBuilder list = new StringBuilder();
-        StudentIO.displayData();
-        for (Student k: StudentIO.arrayList
-             ) {
-            System.out.println("It is in the foreach loop");
-            list.append(k.getStudentId()).append(" ").append(k.getProgram()).append(" ").append(k.getSemester()).append(" ").append(k.getCourses()).append("\n");
-        }
-        textArea.setText(list.toString());
+        btnDisplay.addActionListener(e ->  { //This button is designed to DISPLAY selected Program from combobox
+        	textArea.setText("");
+        	
+            System.out.println("Button is working"); //Checker in Console
+            
+            StringBuilder strBuild = new StringBuilder();
+            if (StudentIO.arrayList.size() == 0) { //Checks ArrayList size
+                StudentIO.displayData(); //If array list size is 0 it will call this method to add elements.
+                
+                for (Student k: StudentIO.arrayList // ForEach to check each elements in array list
+                ) {
+                    System.out.println("It is in the foreach loop"); //Checker in Console
+                    
+                    if (k.getProgram().equals(comboBox.getSelectedItem())) // Checks equality of selected item in ComboBox 
+                    	strBuild.append(k.getStudentId()).append(" ").append(k.getProgram()).append(" ").append(k.getSemester()).append(" ").append(k.getCourses()).append("\n");
+                }
+                textArea.setText(strBuild.toString());
+                
+                strBuild.setLength(0);
+                
+            } else { //if array list contains element this part will be executed
+                for (Student k: StudentIO.arrayList
+                ) {
+                    System.out.println("It is in the foreach loop");//Checker in Console
+                    
+                    if (k.getProgram().equals(comboBox.getSelectedItem())) // Checks equality of selected item in ComboBox 
+                    	strBuild.append(k.getStudentId()).append(" ").append(k.getProgram()).append(" ").append(k.getSemester()).append(" ").append(k.getCourses()).append("\n");
+                }
+                textArea.setText(strBuild.toString()); // adds content of StringBuilder in to the text area.
+                
+                strBuild.setLength(0); // Resets the StringBuilder
+            }
+        
         });
         btnDisplay.setForeground(Color.RED);
         btnDisplay.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -369,13 +387,33 @@ public class MainGUI extends JFrame {
         contentPane.add(btnLast);
 
         JButton btnUpdate = new JButton("Update");
-        btnUpdate.setToolTipText("Update Current Record");
-        btnUpdate.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) 
-        	{
-        		// needs work 
-        	}
+        btnUpdate.addActionListener(e -> {
+            if(txtStudentId.getText().equals(""))
+                JOptionPane.showMessageDialog(null,"Student ID can not be empty");
+            else {
+                StringBuilder stringBuilder = new StringBuilder();
+                int selSemester = 0;
+
+                if (rdOne.isSelected()) selSemester = 1;
+                if (rdTwo.isSelected()) selSemester = 2;
+                if (rdThree.isSelected()) selSemester = 3;
+                if (rdFour.isSelected()) selSemester = 4;
+
+                System.out.println(selSemester);
+
+                if(chckbxC1.isSelected()) stringBuilder.append("C1 ");
+                if(chckbxC2.isSelected()) stringBuilder.append("C2 ");
+                if(chckbxC3.isSelected()) stringBuilder.append("C3 ");
+                if(chckbxC4.isSelected()) stringBuilder.append("C4 ");
+                if(chckbxC5.isSelected()) stringBuilder.append("C5");
+                System.out.println(stringBuilder.toString());
+
+                student = new Student(StudentIO.idFinder(), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
+
+                StudentIO.updateRecord(student, Integer.parseInt(txtStudentId.getText()));
+            }
         });
+        btnUpdate.setToolTipText("Update Current Record");
         btnUpdate.setForeground(new Color(0, 153, 0));
         btnUpdate.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnUpdate.setBounds(380, 187, 80, 24);
