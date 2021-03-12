@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
+import java.io.EOFException;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 
@@ -140,52 +141,57 @@ public class MainGUI extends JFrame {
 
         JButton btnSave = new JButton("Save");
         btnSave.addActionListener(e -> {
+        	try {
+        		StringBuilder stringBuilder = new StringBuilder();
+                int selSemester = 0;
+                
+                //To add semester
+                if (rdOne.isSelected()) selSemester = 1;
+                if (rdTwo.isSelected()) selSemester = 2;
+                if (rdThree.isSelected()) selSemester = 3;
+                if (rdFour.isSelected()) selSemester = 4;
+
+                System.out.println(selSemester); //Checker in Console
+
+                //To add Classes to StringBuilder
+                if(chckbxC1.isSelected()) stringBuilder.append("C1 ");
+                if(chckbxC2.isSelected()) stringBuilder.append("C2 ");
+                if(chckbxC3.isSelected()) stringBuilder.append("C3 ");
+                if(chckbxC4.isSelected()) stringBuilder.append("C4 ");
+                if(chckbxC5.isSelected()) stringBuilder.append("C5");
+                
+                System.out.println(stringBuilder.toString()); //Checker in Console
+
+                //This line will load data to Student class
+                student = new Student(StudentIO.idFinder(), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
+                
+                // message to confirm data that is saved - Tim 
+                JOptionPane.showMessageDialog(null,"Student ID: " + StudentIO.idFinder() + "\n" + 
+                "Program: " + comboBox.getSelectedItem() + "\n" +
+                "Semester: " + selSemester + "\n"+ 
+                "Courses: " + stringBuilder.toString());
+                
+                StudentIO.saveData(student);
+                
+                // Cezmi - I did not understand purpose of this code???? ********* WHY **************
+                
+                // Tim  - keeps track of records added for quick reference (in last - next and prv)  
+    			addrecs = 1;			
+    			try 
+    			{
+    				StudentIO.saveRecord(addrecs);
+    			} 
+    			catch (IOException e1) 
+    			{				
+    				e1.printStackTrace();
+    			}	
+                // Tim 
+        		
+        		
+        	} catch (IOException ex) {
+                System.out.println("Error! File is not found");
+            }
         	
-            StringBuilder stringBuilder = new StringBuilder();
-            int selSemester = 0;
-            
-            //To add semester
-            if (rdOne.isSelected()) selSemester = 1;
-            if (rdTwo.isSelected()) selSemester = 2;
-            if (rdThree.isSelected()) selSemester = 3;
-            if (rdFour.isSelected()) selSemester = 4;
-
-            System.out.println(selSemester); //Checker in Console
-
-            //To add Classes to StringBuilder
-            if(chckbxC1.isSelected()) stringBuilder.append("C1 ");
-            if(chckbxC2.isSelected()) stringBuilder.append("C2 ");
-            if(chckbxC3.isSelected()) stringBuilder.append("C3 ");
-            if(chckbxC4.isSelected()) stringBuilder.append("C4 ");
-            if(chckbxC5.isSelected()) stringBuilder.append("C5");
-            
-            System.out.println(stringBuilder.toString()); //Checker in Console
-
-            //This line will load data to Student class
-            student = new Student(StudentIO.idFinder(), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
-            
-            // message to confirm data that is saved - Tim 
-            JOptionPane.showMessageDialog(null,"Student ID: " + StudentIO.idFinder() + "\n" + 
-            "Program: " + comboBox.getSelectedItem() + "\n" +
-            "Semester: " + selSemester + "\n"+ 
-            "Courses: " + stringBuilder.toString());
-            
-            StudentIO.saveData(student);
-            
-            // Cezmi - I did not understand purpose of this code????
-            
-            // Tim  - keeps track of records added for quick reference (in last - next and prv)  
-			addrecs = 1;			
-			try 
-			{
-				StudentIO.saveRecord(addrecs);
-			} 
-			catch (IOException e1) 
-			{				
-				e1.printStackTrace();
-			}	
-            // Tim 
-
         });
         btnSave.setForeground(Color.RED);
         btnSave.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -194,28 +200,33 @@ public class MainGUI extends JFrame {
 
         JButton btnDisplay = new JButton("Display");
         btnDisplay.addActionListener(e ->  { //This button is designed to DISPLAY selected Program from combobox
-        	textArea.setText("");
-        	
-        	String str = "Student ID" + "\t" + "Program" + "\t" + "Semester" + "\t" + "Courses" + "\n";
-            
-            if (StudentIO.arrayList.size() == 0) { //Checks ArrayList size
-                StudentIO.displayData(); //If array list size is 0 it will call this method to add elements.
+        	try {
+        		textArea.setText("");
+            	
+            	String str = "Student ID" + "\t" + "Program" + "\t" + "Semester" + "\t" + "Courses" + "\n";
                 
-                for (Student k: StudentIO.arrayList // ForEach to check each elements in array list
-                ) {
-                    if (k.getProgram().equals(comboBox.getSelectedItem())) // Checks equality of selected item in ComboBox 
-                    	str += k.getStudentId() + "\t" + k.getProgram() + "\t" + k.getSemester() + "\t" + k.getCourses() + "\n";
+                if (StudentIO.arrayList.size() == 0) { //Checks ArrayList size
+                    StudentIO.displayData(); //If array list size is 0 it will call this method to add elements.
+                    
+                    for (Student k: StudentIO.arrayList // ForEach to check each elements in array list
+                    ) {
+                        if (k.getProgram().equals(comboBox.getSelectedItem())) // Checks equality of selected item in ComboBox 
+                        	str += k.getStudentId() + "\t" + k.getProgram() + "\t" + k.getSemester() + "\t" + k.getCourses() + "\n";
+                    }
+                    textArea.setText(str);
+                    
+                } else { //if array list contains element this part will be executed
+                    for (Student k: StudentIO.arrayList
+                    ) {
+                        if (k.getProgram().equals(comboBox.getSelectedItem())) // Checks equality of selected item in ComboBox 
+                        	str += k.getStudentId() + "\t" + k.getProgram() + "\t" + k.getSemester() + "\t" + k.getCourses() + "\n";
+                    }
+                    textArea.setText(str); // adds content of StringBuilder in to the text area.
                 }
-                textArea.setText(str);
-                
-            } else { //if array list contains element this part will be executed
-                for (Student k: StudentIO.arrayList
-                ) {
-                    if (k.getProgram().equals(comboBox.getSelectedItem())) // Checks equality of selected item in ComboBox 
-                    	str += k.getStudentId() + "\t" + k.getProgram() + "\t" + k.getSemester() + "\t" + k.getCourses() + "\n";
-                }
-                textArea.setText(str); // adds content of StringBuilder in to the text area.
+        	} catch (IOException ex) {
+                System.out.println("Error! File is not found");
             }
+        	
         
         });
         btnDisplay.setForeground(Color.RED);
@@ -334,7 +345,9 @@ public class MainGUI extends JFrame {
         btnLast.setToolTipText("Returns Most Rececnt Record");
         btnLast.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) 
-        	{        		
+        	{ 
+        		
+        		//*************** TWO DIFFERENT TRY ******************* WHY???? *************
         		Object[] records = null;
         		int record = 0;
 				try 
@@ -372,42 +385,35 @@ public class MainGUI extends JFrame {
 
         JButton btnUpdate = new JButton("Update");
         btnUpdate.addActionListener(e -> {
-        	// Tim 
-        	int comparer = 0;
-        	comparer = Integer.parseInt(txtStudentId.getText());
-        	Student studComp = new Student();
-        	//Tim 
-            if(txtStudentId.getText().equals(""))
-                JOptionPane.showMessageDialog(null,"Student ID can not be empty");
-            // need and extra if for file not existing 
-            // Added by Tim - check if record exists            
-            if (comparer != studComp.getStudentId() )
-            {
-            	JOptionPane.showMessageDialog(null,"Student ID does not exist");
-            }
-            else 
-            {
-                StringBuilder stringBuilder = new StringBuilder();
-                int selSemester = 0;
+        	try {
+                if(txtStudentId.getText().equals(""))
+                    JOptionPane.showMessageDialog(null,"Student ID can not be empty");
+                else {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    int selSemester = 0;
 
-                if (rdOne.isSelected()) selSemester = 1;
-                if (rdTwo.isSelected()) selSemester = 2;
-                if (rdThree.isSelected()) selSemester = 3;
-                if (rdFour.isSelected()) selSemester = 4;
+                    if (rdOne.isSelected()) selSemester = 1;
+                    if (rdTwo.isSelected()) selSemester = 2;
+                    if (rdThree.isSelected()) selSemester = 3;
+                    if (rdFour.isSelected()) selSemester = 4;
 
-                System.out.println(selSemester);
+                    System.out.println(selSemester);
 
-                if(chckbxC1.isSelected()) stringBuilder.append("C1 ");
-                if(chckbxC2.isSelected()) stringBuilder.append("C2 ");
-                if(chckbxC3.isSelected()) stringBuilder.append("C3 ");
-                if(chckbxC4.isSelected()) stringBuilder.append("C4 ");
-                if(chckbxC5.isSelected()) stringBuilder.append("C5");
-                System.out.println(stringBuilder.toString());
+                    if (chckbxC1.isSelected()) stringBuilder.append("C1 ");
+                    if (chckbxC2.isSelected()) stringBuilder.append("C2 ");
+                    if (chckbxC3.isSelected()) stringBuilder.append("C3 ");
+                    if (chckbxC4.isSelected()) stringBuilder.append("C4 ");
+                    if (chckbxC5.isSelected()) stringBuilder.append("C5");
+                    System.out.println(stringBuilder.toString());
 
-                student = new Student(Integer.parseInt(txtStudentId.getText()), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
+                    student = new Student(Integer.parseInt(txtStudentId.getText()), comboBox.getSelectedItem(), selSemester, stringBuilder.toString());
 
-                StudentIO.updateRecord(student, Integer.parseInt(txtStudentId.getText()));
-                JOptionPane.showMessageDialog(null,"Student ID : " + txtStudentId.getText() + "\nhas been updated successfully");
+                    StudentIO.updateRecord(student, Integer.parseInt(txtStudentId.getText()));
+                    JOptionPane.showMessageDialog(null, "Student ID : " + txtStudentId.getText() + "\nhas been updated successfully");
+                }
+                
+            } catch (IOException ex) {
+                System.out.println("Error! File is not found");
             }
         });
         btnUpdate.setToolTipText("Update Current Record");

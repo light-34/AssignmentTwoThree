@@ -2,7 +2,6 @@ package Data;
 
 
 import Business.Student;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -27,7 +26,7 @@ public class StudentIO {
     
     //This method is designed by *****CEZMI******
     //This method is designed to save data in the file
-    public static void saveData (Student stdReg) {
+    public static void saveData (Student stdReg) throws IOException {
     	try(DataOutputStream rdAOut = new DataOutputStream((new FileOutputStream(bfile,true)))) {
 
             //Write data from Student class into the binary file
@@ -46,17 +45,13 @@ public class StudentIO {
           //This will renew data in the array list
           arrayList.clear();
 
-        } catch (EOFException ex) {
-            System.out.println("End of the file");
-        } catch (IOException ex) {
-            System.out.println("Error! File is not found");
-        }
+        } 
 
     }
     
     //This method is used to see all data in text area 
     //This method is designed by *****CEZMI******
-    public static void displayData () { 
+    public static void displayData () throws IOException { 
         int stdId = 0;
         int semester = 0;
         StringBuilder strBuilProg = new StringBuilder();
@@ -89,16 +84,12 @@ public class StudentIO {
 
             }
 
-        } catch (EOFException ex) {
-            System.out.println("End of the file");
-        } catch (IOException ex) {
-            System.out.println("Error! File is not found");
-        }
+        } 
     }
     
     //This method is used to update the data 
     //This method is designed by *****CEZMI******
-    public static void updateRecord (Student stdReg, int record) { 
+    public static void updateRecord (Student stdReg, int record) throws IOException { 
         try(RandomAccessFile rdAOut = new RandomAccessFile(bfile,"rw"))
         {
             //set pointer at the beginning of the updated record
@@ -121,10 +112,6 @@ public class StudentIO {
             //Clears Array List
             arrayList.clear();
             
-        } catch (EOFException ex) {
-            System.out.println("End of the file");
-        } catch (IOException ex) {
-            System.out.println("Error! File is not found");
         }
 
     }
