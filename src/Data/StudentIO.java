@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class StudentIO {
     private static File file = new File("ProgramList.txt");
-    private static File bfile = new File("students.dat");
+    private static File bfile = new File("students.dat");   
     private static final int REC_SIZE = 42;  //42
     private static final int COURSE_SIZE = 14; //Size of characters in the course NOT IN THE FILE
     public static ArrayList<Student> arrayList = new ArrayList<>();
@@ -124,7 +124,8 @@ public class StudentIO {
             {
                 JOptionPane.showMessageDialog(null, "There is no previous data");
                 return "NO DATA IS AVAILABLE";
-            }
+            }           
+            
             
             // else statement to handle work with prev records 
             else 
@@ -316,6 +317,5 @@ public class StudentIO {
         }
 
         return id + 1;
-    }
-
+    }   
 }

@@ -9,7 +9,9 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Font;
 import java.awt.Color;
 import java.io.EOFException;
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class MainGUI extends JFrame {
 
@@ -17,7 +19,7 @@ public class MainGUI extends JFrame {
     private JTextField txtStudentId;
     private JTextArea textArea;
     private final ButtonGroup buttonGroup = new ButtonGroup();
-    private Business.Student student;
+    private Business.Student student;   
 
     /**
      * Launch the application.
@@ -288,11 +290,31 @@ public class MainGUI extends JFrame {
         contentPane.add(btnLast);
 
         JButton btnUpdate = new JButton("Update"); // This button is to update desired record
-        btnUpdate.addActionListener(e -> {
-            try {
-                if(txtStudentId.getText().equals(""))
-                    JOptionPane.showMessageDialog(null,"Student ID can not be empty");
-                else {
+        btnUpdate.addActionListener(e -> { 
+        	try {
+        		if(txtStudentId.getText().equals(""))
+                {
+                	JOptionPane.showMessageDialog(null,"Student ID must not be empty");
+                }
+        		
+        		// Tim Added - update now works great
+        		StudentIO.lastRecord(); 
+        		int tester = 0;
+        		int comp = Integer.parseInt(txtStudentId.getText());
+        				
+        		for(int i = 0; i < StudentIO.lastRecord().indexOf(0); i++ )
+        		{
+        			tester = i;
+        		} 
+        		
+                // comparer to see if record exists 
+                if (comp > tester)
+                {
+                	JOptionPane.showMessageDialog(null,"Student ID does not exist");
+                	 textArea.setText("There are only " + String.valueOf(tester) + " students on file");
+                }
+                else 
+                {
                     StringBuilder stringBuilder = new StringBuilder();
                     int selSemester = 0;
 
