@@ -141,6 +141,11 @@ public class MainGUI extends JFrame {
                 student = new Student(StudentIO.idFinder(), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
                 // call save data method
                 StudentIO.saveData(student);
+                // message to confirm data that is saved - Tim 
+                JOptionPane.showMessageDialog(null,"Student ID: " + (StudentIO.idFinder() - 1) + "\n" + 
+                "Program: " + comboBox.getSelectedItem() + "\n" +
+                "Semester: " + selSemester + "\n"+ 
+                "Courses: " + stringBuilder.toString());
 
             } catch (IOException ex) {
                 System.out.println("Error! File is not found");
@@ -162,17 +167,18 @@ public class MainGUI extends JFrame {
                     for (Student k: StudentIO.arrayList) { //This loop will get all elements of array list
                         System.out.println("It is in the foreach loop");
                         if (k.getProgram().equals(comboBox.getSelectedItem()))
-                            str += k.getStudentId() + "\t" + k.getProgram() + "\t" + k.getSemester() + "\t" + k.getCourses() + "\n";
+                            str += k.getStudentId() + "\t" + k.getProgram() + "\t" + k.getSemester() + "\t" + k.getCourses() + "\n";                        
                     }
                     textArea.setText(str);
+                    
                 }
                 else {
                     for (Student k: StudentIO.arrayList) {
                         System.out.println("It is in the foreach loop");
                         if (k.getProgram().equals(comboBox.getSelectedItem()))
-                            str += k.getStudentId() + "\t" + k.getProgram() + "\t" + k.getSemester() + "\t" + k.getCourses() + "\n";
+                            str += k.getStudentId() + "\t" + k.getProgram() + "\t" + k.getSemester() + "\t" + k.getCourses() + "\n";                 
                     }
-                    textArea.setText(str);
+                    textArea.setText(str);                    
                 }
             } catch (IOException ex) {
                 System.out.println("Error! File is not found");
