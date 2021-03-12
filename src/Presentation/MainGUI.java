@@ -310,8 +310,7 @@ public class MainGUI extends JFrame {
                 // comparer to see if record exists 
                 if (comp > tester)
                 {
-                	JOptionPane.showMessageDialog(null,"Student ID does not exist");
-                	 textArea.setText("There are only " + String.valueOf(tester) + " students on file");
+                	JOptionPane.showMessageDialog(null,"Student ID does not exist");                	 
                 }
                 else 
                 {
