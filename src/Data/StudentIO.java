@@ -70,22 +70,41 @@ public class StudentIO {
     public static String firstRecord () throws IOException{
         try (RandomAccessFile raf = new RandomAccessFile(bfile, "r"))// random access object
         {
-            raf.seek(0); // begin of record
+        	// begin of file / records
+            raf.seek(0); 
+            
+            // initialize variables 
             int stdId = 0;
             int semester = 0;
             StringBuilder strBuilProg = new StringBuilder();
             StringBuilder strBuilCours = new StringBuilder();
+            
+            // get student id - simple read int (4 bytes)
             stdId = raf.readInt();
-            for (int j = 0; j < 3; j++) {
+            
+            // get program - for loop up to 3 (size of program ie WEB - 6 bytes)  
+            // using read char add to string 
+            for (int j = 0; j < 3; j++) 
+            {
                 char progChar = raf.readChar();
                 strBuilProg.append(progChar);
             }
+            
+            // get semester - simple read int (4 bytes)
             semester = raf.readInt();
-            for (int k = 0; k < COURSE_SIZE; k++) {
+            
+            // get courses - for loop up to Course size (28 bytes)  
+            // using read char add to string 
+            for (int k = 0; k < COURSE_SIZE; k++) 
+            {
                 char courseChar = raf.readChar();
                 strBuilCours.append(courseChar);
             }
+            
+            // sets pointer???
             pointer = (int)raf.getFilePointer();
+            
+            // return string 
             return stdId + "\t" + strBuilProg.toString() + "\t"
                     + semester + "\t" + strBuilCours.toString();
         }
@@ -94,29 +113,51 @@ public class StudentIO {
     public static String previousRecord () throws IOException{
         try (RandomAccessFile raf = new RandomAccessFile(bfile, "r"))// random access object
         {
-            int stdId = 0;
+            // initialize variables 
+        	int stdId = 0; 
             int semester = 0;
             StringBuilder strBuilProg = new StringBuilder();
             StringBuilder strBuilCours = new StringBuilder();
 
-            if (pointer <= 0) {
+            // if statement to handle no more previous records - pointer cant be less or equl to 0
+            if (pointer <= 0) 
+            {
                 JOptionPane.showMessageDialog(null, "There is no previous data");
                 return "NO DATA IS AVAILABLE";
             }
-            else {
-                raf.seek(pointer - REC_SIZE*2); // begin of record
+            
+            // else statement to handle work with prev records 
+            else 
+            {
+            	// begin of record -> previous 
+                raf.seek(pointer - REC_SIZE*2);
+                
+                // get student id - simple read int (4 bytes)
                 stdId = raf.readInt();
-                for (int j = 0; j < 3; j++) {
+                
+                // get program - for loop up to program size (3 char - 6 bytes)  
+                // using read char add to string 
+                for (int j = 0; j < 3; j++) 
+                {
                     char progChar = raf.readChar();
                     strBuilProg.append(progChar);
                 }
+                
+                // get semester - simple read int (4 bytes)
                 semester = raf.readInt();
-                for (int k = 0; k < COURSE_SIZE; k++) {
+                
+                // get courses - for loop up to Course size (28 bytes)  
+                // using read char add to string 
+                for (int k = 0; k < COURSE_SIZE; k++) 
+                {
                     char courseChar = raf.readChar();
                     strBuilCours.append(courseChar);
                 }
             }
+            // sets pointer???
             pointer = (int)raf.getFilePointer();
+            
+            // returns string 
             return stdId + "\t" + strBuilProg.toString() + "\t"
                     + semester + "\t" + strBuilCours.toString();
         }
@@ -125,30 +166,52 @@ public class StudentIO {
     public static String nextRecord () throws IOException{
         try (RandomAccessFile raf = new RandomAccessFile(bfile, "r"))// random access object
         {
+        	// initialize variables 
             int stdId = 0;
             int semester = 0;
             StringBuilder strBuilProg = new StringBuilder();
             StringBuilder strBuilCours = new StringBuilder();
-
-            if (pointer == bfile.length()) {
+            
+            // if statement to handle reaching end of records - no more records
+            if (pointer == bfile.length()) 
+            {
                 JOptionPane.showMessageDialog(null, "This is the end of file");
                 return "NO DATA IS AVAILABLE";
             }
-            else {
-                raf.seek(pointer); // begin of record
+            
+            // else statement to do work with next record 
+            else 
+            {
+            	// begin of record - next (after we have read on record - begins on next) 
+                raf.seek(pointer); 
+                
+                // gets stud id - simple read int - 4 bytes 
                 stdId = raf.readInt();
-                for (int j = 0; j < 3; j++) {
+                
+                // get program - for loop up to program size  
+                // using read char add to string 
+                for (int j = 0; j < 3; j++) 
+                {
                     char progChar = raf.readChar();
                     strBuilProg.append(progChar);
                 }
+                
+                // gets semester - simple read int 
                 semester = raf.readInt();
-                for (int k = 0; k < COURSE_SIZE; k++) {
+                
+                // get courses - for loop up to Course size (28 bytes)  
+                // using read char add to string 
+                for (int k = 0; k < COURSE_SIZE; k++) 
+                {
                     char courseChar = raf.readChar();
                     strBuilCours.append(courseChar);
                 }
             }
+            
+            // sets pointer ???
             pointer = (int)raf.getFilePointer();
 
+            // return string 
             return stdId + "\t" + strBuilProg.toString() + "\t"
                     + semester + "\t" + strBuilCours.toString();
         }
@@ -157,22 +220,41 @@ public class StudentIO {
     public static String lastRecord () throws IOException{
         try (RandomAccessFile raf = new RandomAccessFile(bfile, "r"))// random access object
         {
-            raf.seek(bfile.length() - REC_SIZE); // begin of record
+        	// begin of last record
+            raf.seek(bfile.length() - REC_SIZE); 
+            
+            // initialize variables 
             int stdId = 0;
             int semester = 0;
             StringBuilder strBuilProg = new StringBuilder();
             StringBuilder strBuilCours = new StringBuilder();
+            
+            // get student id - simple read int 
             stdId = raf.readInt();
-            for (int j = 0; j < 3; j++) {
+            
+            // get program - for loop up to program size 
+            // using read char add to string 
+            for (int j = 0; j < 3; j++) 
+            {
                 char progChar = raf.readChar();
                 strBuilProg.append(progChar);
             }
+            
+            // get semester - read int 
             semester = raf.readInt();
-            for (int k = 0; k < COURSE_SIZE; k++) {
+            
+            // get courses - for loop up to Course size (28 bytes)  
+            // using read char add to string 
+            for (int k = 0; k < COURSE_SIZE; k++) 
+            {
                 char courseChar = raf.readChar();
                 strBuilCours.append(courseChar);
             }
+            
+            // set pointer???
             pointer = (int)raf.getFilePointer();
+            
+            // return string 
             return stdId + "\t" + strBuilProg.toString() + "\t"
                     + semester + "\t" + strBuilCours.toString();
         }

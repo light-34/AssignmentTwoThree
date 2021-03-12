@@ -203,12 +203,18 @@ public class MainGUI extends JFrame {
         contentPane.add(separator);
 
         JButton btnFirst = new JButton("First"); // This button is to show first record in the file
-        btnFirst.addActionListener(e ->  {
+        btnFirst.addActionListener(e ->  
+        {
+        	// print string to give header for data 
             String str = "Student ID" + "\t" + "Program" + "\t" + "Semester" + "\t" + "Courses" + "\n";
-            try {
+            try 
+            {
+            	// call the first record method, add to str var and print to text area 
                 str += StudentIO.firstRecord();
                 textArea.setText(str);
-            } catch (IOException ex) {
+            } 
+            catch (IOException ex) 
+            {
                 System.out.println("Error in reading");
             }
 
@@ -219,13 +225,18 @@ public class MainGUI extends JFrame {
         contentPane.add(btnFirst);
 
         JButton btnPrevious = new JButton("Previous"); // This button is to show previous record
-        btnPrevious.addActionListener(e -> {
+        btnPrevious.addActionListener(e -> 
+        {
+        	// print string to give header for data 
             String str = "Student ID" + "\t" + "Program" + "\t" + "Semester" + "\t" + "Courses" + "\n";
-            try {
+            try 
+            {
+            	// call the previous record method, add to str var and print to text area 
                 str += StudentIO.previousRecord();
                 textArea.setText(str);
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null,"There is no previous Data");
+            } 
+            catch (IOException ex) 
+            {
                 System.out.println("Error in reading");
             }
         });
@@ -235,12 +246,18 @@ public class MainGUI extends JFrame {
         contentPane.add(btnPrevious);
 
         JButton btnNext = new JButton("Next"); // This button is to show next record
-        btnNext.addActionListener(e -> {
+        btnNext.addActionListener(e -> 
+        {
+        	// print string to give header for data 
             String str = "Student ID" + "\t" + "Program" + "\t" + "Semester" + "\t" + "Courses" + "\n";
-            try {
+            try 
+            {
+            	// call the next record method, add to str var and print to text area
                 str += StudentIO.nextRecord();
                 textArea.setText(str);
-            } catch (IOException ex) {
+            } 
+            catch (IOException ex) 
+            {            	
                 System.out.println("Error in reading");
             }
         });
@@ -250,12 +267,18 @@ public class MainGUI extends JFrame {
         contentPane.add(btnNext);
 
         JButton btnLast = new JButton("Last"); // This button is to show last record
-        btnLast.addActionListener(e -> {
+        btnLast.addActionListener(e -> 
+        {
+        	// print string to give header for data 
             String str = "Student ID" + "\t" + "Program" + "\t" + "Semester" + "\t" + "Courses" + "\n";
-            try {
+            try 
+            {
+            	// call the last record method, add to str var and print to text area
                 str += StudentIO.lastRecord();
                 textArea.setText(str);
-            } catch (IOException ex) {
+            } 
+            catch (IOException ex) 
+            {
                 System.out.println("Error in reading");
             }
         });
