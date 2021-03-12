@@ -1,30 +1,15 @@
 package Presentation;
 
-
 import Business.Student;
-
 import Data.StudentIO;
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
+import java.awt.EventQueue;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.Font;
 import java.awt.Color;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JRadioButton;
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBox;
-import javax.swing.JButton;
-import javax.swing.JSeparator;
-import javax.swing.JTextArea;
-import java.awt.event.ActionListener;
 import java.io.EOFException;
 import java.io.IOException;
-import java.awt.event.ActionEvent;
 
 public class MainGUI extends JFrame {
 
@@ -33,8 +18,6 @@ public class MainGUI extends JFrame {
     private JTextArea textArea;
     private final ButtonGroup buttonGroup = new ButtonGroup();
     private Business.Student student;
-    private int counter = 0;
-    private int addrecs = 0;
 
     /**
      * Launch the application.
@@ -89,7 +72,6 @@ public class MainGUI extends JFrame {
         contentPane.add(lblCourses);
 
         txtStudentId = new JTextField();
-        txtStudentId.setFont(new Font("Tahoma", Font.BOLD, 12));
         txtStudentId.setBounds(125, 14, 228, 24);
         contentPane.add(txtStudentId);
         txtStudentId.setColumns(10);
@@ -139,105 +121,70 @@ public class MainGUI extends JFrame {
         chckbxC5.setBounds(309, 138, 44, 24);
         contentPane.add(chckbxC5);
 
-        JButton btnSave = new JButton("Save");
+        JButton btnSave = new JButton("Save"); // This button is designed to save data
         btnSave.addActionListener(e -> {
-        	try {
-        		StringBuilder stringBuilder = new StringBuilder();
+            try {
+                StringBuilder stringBuilder = new StringBuilder();
                 int selSemester = 0;
-                
-                //To add semester
+
                 if (rdOne.isSelected()) selSemester = 1;
                 if (rdTwo.isSelected()) selSemester = 2;
                 if (rdThree.isSelected()) selSemester = 3;
                 if (rdFour.isSelected()) selSemester = 4;
 
-                System.out.println(selSemester); //Checker in Console
-
-                //To add Classes to StringBuilder
                 if(chckbxC1.isSelected()) stringBuilder.append("C1 ");
                 if(chckbxC2.isSelected()) stringBuilder.append("C2 ");
                 if(chckbxC3.isSelected()) stringBuilder.append("C3 ");
                 if(chckbxC4.isSelected()) stringBuilder.append("C4 ");
                 if(chckbxC5.isSelected()) stringBuilder.append("C5");
-                
-                System.out.println(stringBuilder.toString()); //Checker in Console
-
-                //This line will load data to Student class
+                // Add data to a Student object
                 student = new Student(StudentIO.idFinder(), comboBox.getSelectedItem(),selSemester, stringBuilder.toString());
-                
-                // message to confirm data that is saved - Tim 
-                JOptionPane.showMessageDialog(null,"Student ID: " + StudentIO.idFinder() + "\n" + 
-                "Program: " + comboBox.getSelectedItem() + "\n" +
-                "Semester: " + selSemester + "\n"+ 
-                "Courses: " + stringBuilder.toString());
-                
+                // call save data method
                 StudentIO.saveData(student);
-                
-                // Cezmi - I did not understand purpose of this code???? ********* WHY **************
-                
-                // Tim  - keeps track of records added for quick reference (in last - next and prv)  
-    			addrecs = 1;			
-    			try 
-    			{
-    				StudentIO.saveRecord(addrecs);
-    			} 
-    			catch (IOException e1) 
-    			{				
-    				e1.printStackTrace();
-    			}	
-                // Tim 
-        		
-        		
-        	} catch (IOException ex) {
+
+            } catch (IOException ex) {
                 System.out.println("Error! File is not found");
             }
-        	
         });
         btnSave.setForeground(Color.RED);
         btnSave.setFont(new Font("Tahoma", Font.BOLD, 11));
         btnSave.setBounds(384, 52, 80, 24);
         contentPane.add(btnSave);
 
-        JButton btnDisplay = new JButton("Display");
-        btnDisplay.addActionListener(e ->  { //This button is designed to DISPLAY selected Program from combobox
-        	try {
-        		textArea.setText("");
-            	
-            	String str = "Student ID" + "\t" + "Program" + "\t" + "Semester" + "\t" + "Courses" + "\n";
-                
-                if (StudentIO.arrayList.size() == 0) { //Checks ArrayList size
-                    StudentIO.displayData(); //If array list size is 0 it will call this method to add elements.
-                    
-                    for (Student k: StudentIO.arrayList // ForEach to check each elements in array list
-                    ) {
-                        if (k.getProgram().equals(comboBox.getSelectedItem())) // Checks equality of selected item in ComboBox 
-                        	str += k.getStudentId() + "\t" + k.getProgram() + "\t" + k.getSemester() + "\t" + k.getCourses() + "\n";
+        JButton btnDisplay = new JButton("Display"); //This button is designed to show data
+        btnDisplay.addActionListener(e ->  {
+            try {
+                textArea.setText(""); //Clears the text Area
+                String str = "Student ID" + "\t" + "Program" + "\t" + "Semester" + "\t" + "Courses" + "\n";
+
+                if (StudentIO.arrayList.size() == 0) {
+                    StudentIO.displayData(); //Calls displayData method
+                    for (Student k: StudentIO.arrayList) { //This loop will get all elements of array list
+                        System.out.println("It is in the foreach loop");
+                        if (k.getProgram().equals(comboBox.getSelectedItem()))
+                            str += k.getStudentId() + "\t" + k.getProgram() + "\t" + k.getSemester() + "\t" + k.getCourses() + "\n";
                     }
                     textArea.setText(str);
-                    
-                } else { //if array list contains element this part will be executed
-                    for (Student k: StudentIO.arrayList
-                    ) {
-                        if (k.getProgram().equals(comboBox.getSelectedItem())) // Checks equality of selected item in ComboBox 
-                        	str += k.getStudentId() + "\t" + k.getProgram() + "\t" + k.getSemester() + "\t" + k.getCourses() + "\n";
-                    }
-                    textArea.setText(str); // adds content of StringBuilder in to the text area.
                 }
-        	} catch (IOException ex) {
+                else {
+                    for (Student k: StudentIO.arrayList) {
+                        System.out.println("It is in the foreach loop");
+                        if (k.getProgram().equals(comboBox.getSelectedItem()))
+                            str += k.getStudentId() + "\t" + k.getProgram() + "\t" + k.getSemester() + "\t" + k.getCourses() + "\n";
+                    }
+                    textArea.setText(str);
+                }
+            } catch (IOException ex) {
                 System.out.println("Error! File is not found");
             }
-        	
-        
         });
         btnDisplay.setForeground(Color.RED);
         btnDisplay.setFont(new Font("Tahoma", Font.BOLD, 11));
         btnDisplay.setBounds(384, 94, 80, 24);
         contentPane.add(btnDisplay);
 
-        
-        JButton btnExit = new JButton("Exit");
-        btnExit.addActionListener(e -> 
-        { //Button designed to EXIT from app
+        JButton btnExit = new JButton("Exit"); //This button is to exit from app
+        btnExit.addActionListener(e -> {
             System.exit(0);
         });
         btnExit.setForeground(Color.RED);
@@ -249,143 +196,71 @@ public class MainGUI extends JFrame {
         separator.setBounds(10, 171, 454, 2);
         contentPane.add(separator);
 
-        JButton btnFirst = new JButton("First");
-        btnFirst.setToolTipText("Returns Oldest Record");
-        btnFirst.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) 
-        	{
-        		setCounter(1);
-        		int record=1; 
-				try {
-					Student student = StudentIO.firstRecord(record);
-					textArea.setText("The First Record" + "\n" +
-					"Student ID: " + String.valueOf(student.getStudentId()) + "\n" + 
-					"Program Name: " + String.valueOf(student.getProgram()) + "\n" + 
-					"Semester: " + String.valueOf(student.getSemester()) + "\n"  +
-					"Course List: " + student.getCourses());	
-				}
-				catch(IOException e1){					
-					JOptionPane.showMessageDialog(null, "Error! \n" + e1.getMessage());
-				}		
-        	}
+        JButton btnFirst = new JButton("First"); // This button is to show first record in the file
+        btnFirst.addActionListener(e ->  {
+            String str = "Student ID" + "\t" + "Program" + "\t" + "Semester" + "\t" + "Courses" + "\n";
+            try {
+                str += StudentIO.firstRecord();
+                textArea.setText(str);
+            } catch (IOException ex) {
+                System.out.println("Error in reading");
+            }
+
         });
         btnFirst.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnFirst.setForeground(new Color(0, 153, 0));
         btnFirst.setBounds(10, 186, 80, 24);
         contentPane.add(btnFirst);
 
-        JButton btnPrevious = new JButton("Previous");
-        btnPrevious.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) 
-        	{
-        		int record = getCounter();  
-        		record -= 1;
-        		setCounter(record);
-        		if (record >= 1) 
-        		{        			        			
-        			try 
-        			{
-	        			Student student = StudentIO.previousRecord(record);
-						textArea.setText("The Previous Record" + "\n" +
-						"Student ID: " + String.valueOf(student.getStudentId()) + "\n" + 
-						"Program Name: " + String.valueOf(student.getProgram()) + "\n" + 
-						"Semester: " + String.valueOf(student.getSemester()) + "\n"  +
-						"Course List: " + student.getCourses());
-        			}
-					catch(IOException e1)
-        			{					
-						JOptionPane.showMessageDialog(null, "Error! \n" + e1.getMessage());						
-					}
-        		}
-        		else
-        		{
-        			JOptionPane.showMessageDialog(null, "Error! There are no prev records");
-        			record += 1;
-        			setCounter(record);
-        		}
-        	}
+        JButton btnPrevious = new JButton("Previous"); // This button is to show previous record
+        btnPrevious.addActionListener(e -> {
+            String str = "Student ID" + "\t" + "Program" + "\t" + "Semester" + "\t" + "Courses" + "\n";
+            try {
+                str += StudentIO.previousRecord();
+                textArea.setText(str);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(null,"There is no previous Data");
+                System.out.println("Error in reading");
+            }
         });
         btnPrevious.setForeground(new Color(0, 153, 0));
         btnPrevious.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnPrevious.setBounds(100, 187, 90, 24);
         contentPane.add(btnPrevious);
 
-        JButton btnNext = new JButton("Next");
-        btnNext.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) 
-        	{
-        		int record = getCounter();        		
-        		record += 1;
-        		setCounter(record);   
-        		if (record >= 1) {        			        			
-        			try 
-        			{
-	        			Student student = StudentIO.nextRecord(record);
-						textArea.setText("The Next Record" + "\n" +
-						"Student ID: " + String.valueOf(student.getStudentId()) + "\n" + 
-						"Program Name: " + String.valueOf(student.getProgram()) + "\n" + 
-						"Semester: " + String.valueOf(student.getSemester()) + "\n"  +
-						"Course List: " + student.getCourses());
-        			}
-					catch(IOException e1){					
-						JOptionPane.showMessageDialog(null, "Error! There are no more records \n" 
-															+ e1.getMessage());
-						record -= 1;
-		        		setCounter(record);						
-					}
-        		}        		
-        	}
+        JButton btnNext = new JButton("Next"); // This button is to show next record
+        btnNext.addActionListener(e -> {
+            String str = "Student ID" + "\t" + "Program" + "\t" + "Semester" + "\t" + "Courses" + "\n";
+            try {
+                str += StudentIO.nextRecord();
+                textArea.setText(str);
+            } catch (IOException ex) {
+                System.out.println("Error in reading");
+            }
         });
         btnNext.setForeground(new Color(0, 153, 0));
         btnNext.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnNext.setBounds(200, 187, 80, 24);
         contentPane.add(btnNext);
 
-        JButton btnLast = new JButton("Last");
-        btnLast.setToolTipText("Returns Most Rececnt Record");
-        btnLast.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) 
-        	{ 
-        		
-        		//*************** TWO DIFFERENT TRY ******************* WHY???? *************
-        		Object[] records = null;
-        		int record = 0;
-				try 
-				{
-					 records = StudentIO.readRec();	
-					 for(int i = 0; i < records.length; i++)
-					 {
-						 record += 1;
-					 }
-				} 
-				catch (IOException e1) 
-				{					
-					e1.printStackTrace();
-				} 		
-        		setCounter(record);
-        		try 
-        		{
-					Student student = StudentIO.lastRecord(record);
-					textArea.setText("The Last Record" + "\n" +
-					"Student ID: " + String.valueOf(student.getStudentId()) + "\n" + 
-					"Program Name: " + String.valueOf(student.getProgram()) + "\n" + 
-					"Semester: " + String.valueOf(student.getSemester()) + "\n"  +
-					"Course List: " + student.getCourses());	
-				}
-				catch(IOException e1)
-        		{					
-					JOptionPane.showMessageDialog(null, "Error! \n" + e1.getMessage());
-				}
-        	}
+        JButton btnLast = new JButton("Last"); // This button is to show last record
+        btnLast.addActionListener(e -> {
+            String str = "Student ID" + "\t" + "Program" + "\t" + "Semester" + "\t" + "Courses" + "\n";
+            try {
+                str += StudentIO.lastRecord();
+                textArea.setText(str);
+            } catch (IOException ex) {
+                System.out.println("Error in reading");
+            }
         });
         btnLast.setForeground(new Color(0, 153, 0));
         btnLast.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnLast.setBounds(290, 187, 80, 24);
         contentPane.add(btnLast);
 
-        JButton btnUpdate = new JButton("Update");
+        JButton btnUpdate = new JButton("Update"); // This button is to update desired record
         btnUpdate.addActionListener(e -> {
-        	try {
+            try {
                 if(txtStudentId.getText().equals(""))
                     JOptionPane.showMessageDialog(null,"Student ID can not be empty");
                 else {
@@ -411,12 +286,10 @@ public class MainGUI extends JFrame {
                     StudentIO.updateRecord(student, Integer.parseInt(txtStudentId.getText()));
                     JOptionPane.showMessageDialog(null, "Student ID : " + txtStudentId.getText() + "\nhas been updated successfully");
                 }
-                
             } catch (IOException ex) {
                 System.out.println("Error! File is not found");
             }
         });
-        btnUpdate.setToolTipText("Update Current Record");
         btnUpdate.setForeground(new Color(0, 153, 0));
         btnUpdate.setFont(new Font("Tahoma", Font.BOLD, 12));
         btnUpdate.setBounds(380, 187, 80, 24);
@@ -426,19 +299,4 @@ public class MainGUI extends JFrame {
         textArea.setBounds(10, 220, 454, 319);
         contentPane.add(textArea);
     }
-	public int getCounter() {
-		return counter;
-	}
-
-	public void setCounter(int counter) {
-		this.counter = counter;
-	}
-
-	public int getAddrecs() {
-		return addrecs;
-	}
-
-	public void setAddrecs(int addrecs) {
-		this.addrecs = addrecs;
-	}
 }
